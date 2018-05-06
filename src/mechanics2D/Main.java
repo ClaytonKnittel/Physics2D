@@ -23,15 +23,15 @@ public class Main {
 		
 		Ball b2 = new Ball(100, 200, 30, 3, 20, 20, Color.GREEN);
 		
-		Ball b3 = new Ball(200, 200, 20, 30, 20, 20, Color.BLUE);
+		Ball b3 = new Ball(200, 200, 60, 30, 20, 20, Color.BLUE);
 		
 		Ball b4 = new Ball(250, 200, -70, 33, 20, 20, Color.YELLOW);
 		
 		
-		Box box = new Box(200, 250, 40, 50, 20, 100, 40, Color.ORANGE);
+		Box box = new Box(200, 400, 40, -70, 20, 100, 40, Color.ORANGE);
 		box.setW(0.1);
 		
-		Box box2 = new Box(400, 250, -20, 50, 20, 30, 100, Color.BLUE);
+		Box box2 = new Box(400, 250, -24, 50, 20, 30, 100, Color.BLUE);
 		box2.setW(0);
 		
 		Wall south = new Wall(300, 490, 0, 600, 20, Color.DARK_GRAY);
