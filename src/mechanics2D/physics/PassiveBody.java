@@ -54,8 +54,10 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
-	public void interact(PhysicsBody other) {
-		
+	public boolean interact(Interactive other) {
+		if (Body.is(other))
+			return other.interact(this);
+		return false;
 	}
 	
 	@Override

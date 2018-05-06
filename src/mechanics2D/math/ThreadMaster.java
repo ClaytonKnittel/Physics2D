@@ -1,4 +1,4 @@
-package mechanics2D;
+package mechanics2D.math;
 
 public class ThreadMaster implements Runnable {
 	

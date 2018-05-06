@@ -105,7 +105,7 @@ public class Rectangle extends AbstractShape {
 				
 				if (Math.abs(px) <= this.length / 2 && Math.abs(py) <= this.height / 2) {
 					double dir;
-					if (Math.abs(px / this.length) > Math.abs(py / this.height))	// colliding with left or right wall
+					if (Math.abs(Math.abs(px) - this.length / 2) < Math.abs(Math.abs(py) - this.height / 2))	// colliding with left or right wall
 						dir = px > 0 ? 0 : Math.PI;
 					else															// colliding with top or bottom wall
 						dir = py > 0 ? Math.PI / 2 : 3 * Math.PI / 2;

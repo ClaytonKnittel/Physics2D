@@ -37,14 +37,20 @@ public abstract class Body implements PhysicsBody {
 		resetForces();
 	}
 	
-	public void interact(PhysicsBody other) {
-		//PMath.gForce(this, other);
-		if (other.shape().colliding(shape(), true)) {
-			while (areCollisions()) {
-				CollisionInformation c = popCollisionInfo();
-				PMath.collisionForce(this, other, c);
+	public boolean interact(Interactive other) {
+		if (PhysicsBody.is(other)) {
+			PhysicsBody b = (PhysicsBody) other;
+			//PMath.gForce(this, b);
+			if (b.shape().colliding(shape(), true)) {
+				while (areCollisions()) {
+					CollisionInformation c = popCollisionInfo();
+					PMath.collisionForce(this, b, c);
+				}
+				return true;
 			}
-		}
+		} else
+			return other.interact(this);
+		return false;
 	}
 	
 	public static boolean is(Object o) {
@@ -68,6 +74,10 @@ public abstract class Body implements PhysicsBody {
 	@Override
 	public double angle() {
 		return phi;
+	}
+	
+	public void setAngle(double phi) {
+		this.phi = phi;
 	}
 	
 	public double w() {
