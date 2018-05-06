@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Physics2D">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../../Applications/Eclipse.app/Contents/Eclipse/"/>
+    <property name="Utilities.location" value="../../../git/Utilities"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="LWJGL3.userclasspath">
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openvr-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openvr.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-par-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-par-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-par.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-remotery-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-remotery-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-remotery-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-remotery.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-rpmalloc-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-rpmalloc-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-rpmalloc-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-rpmalloc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-sse-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-sse-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-sse-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-sse.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-stb-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-stb-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-stb-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-stb.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyexr-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyexr-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyexr-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyexr.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyfd-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyfd-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyfd-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tinyfd.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tootle-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tootle-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tootle-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-tootle.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-vulkan-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-vulkan-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-vulkan.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-xxhash-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-xxhash-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-xxhash-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-xxhash.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-yoga-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-yoga-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-yoga-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-yoga.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-zstd-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-zstd-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-zstd-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-zstd.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-egl-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-egl-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-egl.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-glfw-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-glfw-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-glfw-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-glfw.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jawt-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jawt-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jawt.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jemalloc-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jemalloc-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jemalloc-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-jemalloc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lmdb-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lmdb-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lmdb-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lmdb.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lz4-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lz4-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lz4-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-lz4.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nanovg-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nanovg-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nanovg-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nanovg.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nfd-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nfd-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nfd-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nfd.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nuklear-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nuklear-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nuklear-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-nuklear.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-odbc-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-odbc-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-odbc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openal-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openal-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openal-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openal.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opencl-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opencl-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opencl.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengl-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengl-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengl-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengl.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengles-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengles-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengles-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-opengles.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openvr-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-openvr-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-par-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-assimp-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-assimp-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-assimp-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-assimp.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-bgfx-javadoc.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-bgfx-natives-macos.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-bgfx-sources.jar"/>
+        <pathelement location="../../../Downloads/lwjgl-release-3.1.6-custom/lwjgl-bgfx.jar"/>
+    </path>
+    <path id="Utilities.classpath">
+        <pathelement location="${Utilities.location}/bin"/>
+        <path refid="LWJGL3.userclasspath"/>
+    </path>
+    <path id="Physics2D.classpath">
+        <pathelement location="bin"/>
+        <path refid="Utilities.classpath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${Utilities.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${Utilities.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="Physics2D.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="Main (7)">
+        <java classname="mechanics2D.Main" failonerror="true" fork="yes">
+            <classpath refid="Physics2D.classpath"/>
+        </java>
+    </target>
+</project>
