@@ -1,14 +1,11 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.AbstractShape;
 import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
-import static mechanics2D.shapes.AbstractShape.popCollisionInfo;
-
 import java.util.LinkedList;
-
-import static mechanics2D.shapes.AbstractShape.areCollisions;
 
 public abstract class Body implements PhysicsBody {
 	
@@ -23,6 +20,8 @@ public abstract class Body implements PhysicsBody {
 	
 	private Shape shape;
 	
+	private CollisionList collisions;
+	
 	protected Body(double x, double y, double vx, double vy, double mass, Shape shape) {
 		pos = new DVector2(x, y);
 		vel = new DVector2(vx, vy);
@@ -32,23 +31,35 @@ public abstract class Body implements PhysicsBody {
 		this.shape = shape;
 		I = shape.moment() * mass;
 		shape.setOwner(this);
+		
 		netForce = new LinkedList<>();
 		netImpulse = new LinkedList<>();
 		resetForces();
+		
+		collisions = new CollisionList();
 	}
 	
-	public boolean interact(Interactive other) {
+	@Override
+	public void addCollision(PhysicsBody other, CollisionInformation c) {
+		collisions.add(other, c);
+	}
+	
+	public void resolveCollisions() {
+		for (CollisionList.BodyCollisionPair bc : collisions)
+			PMath.collisionForce(this, bc.other(), bc.collision());
+		collisions.clear();
+	}
+	
+	public boolean interact(Interactive other) {	// find collisions
 		if (PhysicsBody.is(other)) {
 			PhysicsBody b = (PhysicsBody) other;
-			//PMath.gForce(this, b);
 			if (b.shape().colliding(shape(), true)) {
-				while (areCollisions()) {
-					CollisionInformation c = popCollisionInfo();
-					PMath.collisionForce(this, b, c);
-				}
+				for (CollisionInformation c : AbstractShape.getCollisions())
+					addCollision(b, c);
 				return true;
 			}
-		} else
+		}
+		else
 			return other.interact(this);
 		return false;
 	}

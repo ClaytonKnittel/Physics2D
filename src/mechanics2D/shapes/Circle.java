@@ -50,7 +50,7 @@ public class Circle extends AbstractShape {
 		boolean colliding = di * di >= diff.mag2();
 		
 		if (computeCollisionInfo && colliding)
-			AbstractShape.addCollisionInfo(new CollisionInformation(owner().pos().plus(diff.times(radius / di)), diff.normalized()));
+			addCollision(new CollisionInformation(owner().pos().plus(diff.times(radius / di)), diff.normalized()));
 		return colliding;
 	}
 	

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import mechanics2D.physics.Bodies;
 import mechanics2D.physics.ForceField;
+import mechanics2D.physics.PhysicsConstruct;
 
 public class Screen extends JFrame {
 	private static final long serialVersionUID = -207531079449884642L;
@@ -35,8 +36,8 @@ public class Screen extends JFrame {
 		this.addKeyListener(k);
 	}
 	
-	public void add(ForceField f) {
-		bodies.add(f);
+	public void add(PhysicsConstruct p) {
+		bodies.add(p);
 	}
 	
 	public void physUpdate() {

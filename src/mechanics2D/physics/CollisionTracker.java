@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class CollisionTracker {
 	
 	private LinkedList<Pair> recentCollisions;
-	private static final int wait = 50;		// wait 5 physics iterations before allowing another collision
+	private static final int wait = 0;		// wait 5 physics iterations before allowing another collision
 	
 	public CollisionTracker() {
 		recentCollisions = new LinkedList<>();

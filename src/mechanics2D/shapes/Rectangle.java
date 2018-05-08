@@ -109,10 +109,8 @@ public class Rectangle extends AbstractShape {
 						dir = px > 0 ? 0 : Math.PI;
 					else															// colliding with top or bottom wall
 						dir = py > 0 ? Math.PI / 2 : 3 * Math.PI / 2;
-					
-//					addCollisionInfo(new CollisionInformation(
-//							toSpaceFrame(new DVector2(px, py), owner().pos(), owner().angle()), dir + owner().angle()));
-					addCollisionInfo(new DVector2(px, py), dir);
+						
+					addCollision(new CollisionInformation(new DVector2(px, py), dir));
 				}
 				if (a == -1)
 					b *= -1;
@@ -148,18 +146,18 @@ public class Rectangle extends AbstractShape {
 				if (to.mag2() > PMath.square(c.radius()))
 					return false;
 				
-				addCollisionInfo(new DVector2(hlen, hheight), to.angle());
+				addCollision(new CollisionInformation(new DVector2(hlen, hheight), to.angle()));
 			} else {												// colliding with side of rectangle
 				if (Math.abs(x - hlen) > c.radius())
 					return false;
 				
-				addCollisionInfo(new DVector2(hlen, y), x > 0 ? 0 : Math.PI);
+				addCollision(new CollisionInformation(new DVector2(hlen, y), x > 0 ? 0 : Math.PI));
 			}
 		} else if (Math.abs(y) > Math.abs(hheight)) {				// colliding with top/bottom of rectangle
 			if (Math.abs(y - hheight) > c.radius())
 				return false;
 			
-			addCollisionInfo(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2);
+			addCollision(new CollisionInformation(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2));
 		} else {													// shouldn't happen
 			System.err.println("Circle inside rectangle");
 			return false;
@@ -167,7 +165,7 @@ public class Rectangle extends AbstractShape {
 		return true;
 	}
 	
-	private boolean notIntersecting(double min1, double max1, double min2, double max2) {
+	private static boolean notIntersecting(double min1, double max1, double min2, double max2) {
 		return min2 > max1 || min1 > max2;
 	}
 	

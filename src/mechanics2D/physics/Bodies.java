@@ -10,28 +10,45 @@ public class Bodies {
 	
 	private Web<PhysicsBody> bodies;
 	private LinkedList<ForceField> fields;
-	private CollisionTracker ct;
+	private LinkedList<InteractiveForce> interactions;
+	//private CollisionTracker ct;
 	
 	public Bodies() {
 		bodies = new Web<>();
 		fields = new LinkedList<>();
-		ct = new CollisionTracker();
+		interactions = new LinkedList<>();
+		//ct = new CollisionTracker();
 	}
 	
-	public void add(PhysicsBody...b) {
+	private void addPhysicsBody(PhysicsBody...b) {
 		for (PhysicsBody bo : b)
 			bodies.add(bo);
 	}
 	
+	public void add(PhysicsConstruct c) {
+		if (c instanceof PhysicsBody)
+			addPhysicsBody((PhysicsBody) c);
+		else if (c instanceof ForceField)
+			addFF((ForceField) c);
+		else if (c instanceof InteractiveForce)
+			addIF((InteractiveForce) c);
+		else
+			throw new IllegalArgumentException(c.getClass() + " is not an acceptable PhysicsConstruct");
+	}
+	
 	public void attemptAdd(Drawable... drawables) {
 		for (Drawable d : drawables) {
-			if (PhysicsBody.class.isAssignableFrom(d.getClass()))
-				bodies.add((PhysicsBody) d);
+			if (PhysicsConstruct.class.isAssignableFrom(d.getClass()))
+				add((PhysicsConstruct) d);
 		}
 	}
 	
-	public void add(ForceField f) {
+	private void addFF(ForceField f) {
 		fields.add(f);
+	}
+	
+	private void addIF(InteractiveForce f) {
+		interactions.add(f);
 	}
 	
 	public boolean contains(PhysicsBody b) {
@@ -39,19 +56,18 @@ public class Bodies {
 	}
 	
 	public void update() {
-		bodies.actPairs((b1, b2) -> {
-			if (ct.shouldCollide(b1, b2))
-				if (b1.interact(b2))
-					ct.add(b1, b2);
-		});
+		bodies.actPairs((b1, b2) -> b1.interact(b2));
 		
-		for (ForceField f : fields) {
+		bodies.act(b -> b.resolveCollisions());
+		
+		for (ForceField f : fields)
 			bodies.act(b -> f.interact(b));
-		}
+		for (InteractiveForce f : interactions)
+			bodies.actPairs((b1, b2) -> f.interact(b1, b2));
 		
 		bodies.act(b -> b.update());
 		
-		ct.update();
+		//ct.update();
 	}
 	
 	public void act(Act<PhysicsBody> a) {

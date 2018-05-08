@@ -11,6 +11,7 @@ import mechanics2D.physics.Ball;
 import mechanics2D.physics.Box;
 import mechanics2D.physics.Force;
 import mechanics2D.physics.ForceField;
+import mechanics2D.physics.InteractiveForce;
 import mechanics2D.tests.ConditionalDrawer;
 import mechanics2D.tests.DirectionDrawer;
 import tensor.DVector2;
@@ -31,24 +32,29 @@ public class Main {
 		Color[] colors = new Color[] {
 				RED, GREEN, BLUE, ORANGE, YELLOW, CYAN, BLACK, DARK_GRAY, LIGHT_GRAY, GRAY, MAGENTA, PINK
 		};
-		Ball[] balls = new Ball[16];
+		Ball[] balls = new Ball[1];
 		int l = 0;
-		for (int x = 100; x < 500; x += 100) {
-			for (int y = 100; y < 500; y += 100)
+		for (int x = 100; x < 200; x += 100) {
+			for (int y = 100; y < 200; y += 100)
 				balls[l++] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
 		}
 		
+		Ball b1 = new Ball(300, 250, -50, 0, 30, 14, colors[5]);
+		Ball b2 = new Ball(150, 250, 50, 0, 30, 14, colors[1]);
+		Ball b3 = new Ball(328, 250, 0, 0, 30, 14, colors[2]);
+		
 		
 		Box box = new Box(200, 400, 40, -70, 20, 100, 40, Color.ORANGE);
+		box.setAngle(1);
 		box.setW(0.1);
 		
 		Box box2 = new Box(400, 220.1, 50, -50, 20, 30, 100, Color.BLUE);
 		box2.setAngle(Math.PI / 4);
-		box2.setW(24);
+		box2.setW(4);
 		
-		ForceField gravity = new ForceField(b -> {
-			return new Force(b.pos(), DVector2.Y.times(980 * b.mass()));
-		});
+		ForceField gravity = new ForceField(b -> new Force(DVector2.ZERO, DVector2.Y.times(980 * b.mass())));
+		
+		InteractiveForce attractor = new InteractiveForce((body1, body2) -> new Force(DVector2.ZERO, body2.pos().minus(body1.pos())));
 		
 		//Wall mid = new Wall(350, 400, 0, 105, 10, Color.CYAN);
 		
@@ -81,13 +87,14 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(balls);
+		s.add(b1, b2);
+		//s.add(balls);
 		//s.add(box);
 		//s.add(box2);
 		//s.add(mid);
 		s.add(south, north, east, west);
 		s.add(dir);
-		s.add(gravity);
+		//s.add(gravity);
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.render();
@@ -98,7 +105,6 @@ public class Main {
 		ThreadMaster info = new ThreadMaster(() -> {
 			System.out.println(graphics);
 			System.out.println(physics);
-			//System.out.println(box.energy() + box2.energy() + PMath.gPotential(box, box2));
 		}, 1, false, "info");
 		
 		Controller controller = new Controller(

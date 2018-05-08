@@ -1,6 +1,6 @@
 package mechanics2D.physics;
 
-public class ForceField implements Interactive {
+public class ForceField implements PhysicsConstruct {
 	
 	private Field field;
 	
@@ -8,12 +8,9 @@ public class ForceField implements Interactive {
 		this.field = field;
 	}
 	
-	public boolean interact(Interactive body) {
-		if (PhysicsBody.is(body)) {
-			PhysicsBody b = (PhysicsBody) body;
-			b.addForce(field.getForce(b));
-		}
-		return true;
+	public void interact(PhysicsBody body) {
+		PhysicsBody b = (PhysicsBody) body;
+		b.addForce(field.getForce(b));
 	}
 	
 	public Force getForce(PhysicsBody body) {

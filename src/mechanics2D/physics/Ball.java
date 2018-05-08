@@ -13,5 +13,9 @@ public class Ball extends Body {
 	public Ball(double x, double y, double mass, double radius, Color c) {
 		this(x, y, 0, 0, mass, radius, c);
 	}
-
+	
+	public String toString() {
+		return "Circle:  pos: " + super.pos() + "\t radius: " + ((Circle) shape()).radius();
+	}
+	
 }

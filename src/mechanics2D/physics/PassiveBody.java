@@ -1,5 +1,6 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
@@ -50,6 +51,16 @@ public abstract class PassiveBody implements PhysicsBody {
 	
 	@Override
 	public void update() {
+		return;
+	}
+	
+	@Override
+	public void resolveCollisions() {
+		return;
+	}
+
+	@Override
+	public void addCollision(PhysicsBody other, CollisionInformation collision) {
 		return;
 	}
 	
