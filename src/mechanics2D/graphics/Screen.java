@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 import mechanics2D.physics.Bodies;
-import mechanics2D.physics.ForceField;
 import mechanics2D.physics.PhysicsConstruct;
 
 public class Screen extends JFrame {
@@ -36,8 +35,8 @@ public class Screen extends JFrame {
 		this.addKeyListener(k);
 	}
 	
-	public void add(PhysicsConstruct p) {
-		bodies.add(p);
+	public void addPhysics(PhysicsConstruct...ps) {
+		bodies.add(ps);
 	}
 	
 	public void physUpdate() {

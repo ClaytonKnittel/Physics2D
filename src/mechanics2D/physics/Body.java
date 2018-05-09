@@ -2,6 +2,7 @@ package mechanics2D.physics;
 
 import mechanics2D.shapes.AbstractShape;
 import mechanics2D.shapes.CollisionInformation;
+import mechanics2D.shapes.Orientable;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
@@ -10,9 +11,12 @@ import java.util.LinkedList;
 public abstract class Body implements PhysicsBody {
 	
 	private DVector2 pos, vel;
+	private double phi, w;
+	
+	private PhysicalOrientable future;
 	
 	// angle + angular velocity + moment of inertia
-	private double phi, w, I;
+	private double I;
 	
 	private double mass;
 	
@@ -21,6 +25,8 @@ public abstract class Body implements PhysicsBody {
 	private Shape shape;
 	
 	private CollisionList collisions;
+	
+	private double restitution;
 	
 	protected Body(double x, double y, double vx, double vy, double mass, Shape shape) {
 		pos = new DVector2(x, y);
@@ -32,11 +38,22 @@ public abstract class Body implements PhysicsBody {
 		I = shape.moment() * mass;
 		shape.setOwner(this);
 		
+		this.restitution = 1;
+		
 		netForce = new LinkedList<>();
 		netImpulse = new LinkedList<>();
 		resetForces();
 		
 		collisions = new CollisionList();
+	}
+	
+	public void setRestitution(double r) {
+		this.restitution = r;
+	}
+	
+	@Override
+	public double restitution() {
+		return restitution;
 	}
 	
 	@Override
@@ -50,17 +67,12 @@ public abstract class Body implements PhysicsBody {
 		collisions.clear();
 	}
 	
-	public boolean interact(Interactive other) {	// find collisions
-		if (PhysicsBody.is(other)) {
-			PhysicsBody b = (PhysicsBody) other;
-			if (b.shape().colliding(shape(), true)) {
-				for (CollisionInformation c : AbstractShape.getCollisions())
-					addCollision(b, c);
-				return true;
-			}
+	public boolean interact(PhysicsBody other) {	// find collisions
+		if (other.shape().colliding(shape(), true)) {
+			for (CollisionInformation c : AbstractShape.getCollisions())
+				addCollision(other, c);
+			return true;
 		}
-		else
-			return other.interact(this);
 		return false;
 	}
 	
@@ -127,6 +139,11 @@ public abstract class Body implements PhysicsBody {
 		netImpulse.add(force);
 	}
 	
+	@Override
+	public Orientable futureState() {
+		return future;
+	}
+	
 	private void resetForces() {
 		netForce.clear();
 		netImpulse.clear();
@@ -146,6 +163,21 @@ public abstract class Body implements PhysicsBody {
 		resetForces();
 	}
 	
+	@Override
+	public void computeFutureState() {
+		future = new PhysicalOrientable(pos, vel, phi, w);
+		for (Force f : netForce) {
+			future.vel.add(f.force().times(PMath.dt / mass));
+			
+			future.w += f.torque() * PMath.dt / I;
+		}
+		for (Force f : netImpulse) {
+			future.vel.add(f.force().divide(mass));
+			
+			future.w += f.torque() / I;
+		}
+	}
+	
 	public void update() {
 		applyForces();
 		pos.add(vel.times(PMath.dt));
@@ -154,6 +186,44 @@ public abstract class Body implements PhysicsBody {
 	
 	public double energy() {
 		return mass * vel.mag2() / 2 + I * w * w / 2;
+	}
+	
+	public String toString() {
+		return shape.toString();
+	}
+	
+	private static class PhysicalOrientable implements Orientable {
+		
+		private DVector2 pos, vel;
+		private double phi, w;
+		
+		PhysicalOrientable(DVector2 pos, DVector2 vel, double phi, double w) {
+			this.pos = new DVector2(pos);
+			this.vel = new DVector2(vel);
+			this.phi = phi;
+			this.w = w;
+		}
+		
+		@Override
+		public DVector2 pos() {
+			return pos;
+		}
+
+		@Override
+		public void move(DVector2 dPos) {
+			pos.add(dPos);
+		}
+
+		@Override
+		public double angle() {
+			return phi;
+		}
+
+		@Override
+		public void rotate(double dAngle) {
+			phi += dAngle;
+		}
+		
 	}
 	
 }

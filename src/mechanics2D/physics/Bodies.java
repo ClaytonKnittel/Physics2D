@@ -3,6 +3,7 @@ package mechanics2D.physics;
 import java.util.LinkedList;
 
 import mechanics2D.graphics.Drawable;
+import mechanics2D.shapes.AbstractShape;
 import structures.Act;
 import structures.Web;
 
@@ -25,15 +26,17 @@ public class Bodies {
 			bodies.add(bo);
 	}
 	
-	public void add(PhysicsConstruct c) {
-		if (c instanceof PhysicsBody)
-			addPhysicsBody((PhysicsBody) c);
-		else if (c instanceof ForceField)
-			addFF((ForceField) c);
-		else if (c instanceof InteractiveForce)
-			addIF((InteractiveForce) c);
-		else
-			throw new IllegalArgumentException(c.getClass() + " is not an acceptable PhysicsConstruct");
+	public void add(PhysicsConstruct... cs) {
+		for (PhysicsConstruct c : cs) {
+			if (c instanceof PhysicsBody)
+				addPhysicsBody((PhysicsBody) c);
+			else if (c instanceof ForceField)
+				addFF((ForceField) c);
+			else if (c instanceof InteractiveForce)
+				addIF((InteractiveForce) c);
+			else
+				throw new IllegalArgumentException(c.getClass() + " is not an acceptable PhysicsConstruct");
+		}
 	}
 	
 	public void attemptAdd(Drawable... drawables) {
@@ -56,14 +59,19 @@ public class Bodies {
 	}
 	
 	public void update() {
-		bodies.actPairs((b1, b2) -> b1.interact(b2));
-		
-		bodies.act(b -> b.resolveCollisions());
-		
 		for (ForceField f : fields)
 			bodies.act(b -> f.interact(b));
 		for (InteractiveForce f : interactions)
 			bodies.actPairs((b1, b2) -> f.interact(b1, b2));
+		
+		bodies.act(b -> b.computeFutureState());
+		
+		bodies.actPairs((b1, b2) -> {
+			b1.interact(b2);
+			AbstractShape.clearCollisions();
+		});
+		
+		bodies.act(b -> b.resolveCollisions());
 		
 		bodies.act(b -> b.update());
 		

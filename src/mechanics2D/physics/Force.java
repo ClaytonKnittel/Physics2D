@@ -3,6 +3,13 @@ package mechanics2D.physics;
 import mechanics2D.shapes.CollisionInformation;
 import tensor.DVector2;
 
+/**
+ * All forces are relative to the center of mass of the objects they act on,
+ * but are still in the space frame.
+ * 
+ * @author claytonknittel
+ *
+ */
 public class Force extends CollisionInformation {
 	
 	private double torque;

@@ -9,6 +9,10 @@ public interface Orientable extends Locatable {
 	
 	void rotate(double dAngle);
 	
+	default Orientable futureState() {
+		return this;
+	}
+	
 	default DVector2 toSpaceFrame(DVector2 bodyVec) {
 		return toSpaceFrame(bodyVec, pos(), angle());
 	}

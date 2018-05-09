@@ -3,6 +3,7 @@ package mechanics2D.shapes;
 import java.awt.Color;
 import java.util.LinkedList;
 
+import mechanics2D.Main;
 import mechanics2D.math.Transformable;
 import tensor.DVector2;
 
@@ -34,7 +35,13 @@ public abstract class AbstractShape implements Shape, Transformable {
 		return owner;
 	}
 	
-	protected static void addCollision(CollisionInformation c) {
+	protected CollisionInformation transed(CollisionInformation c) {
+		return new CollisionInformation(owner.toSpaceFrame(c.loc()), c.dir().angle() + owner().angle());
+	}
+	
+	protected void addCollision(CollisionInformation c) {
+		Main.pos = c.loc();
+		Main.dir = c.dir();
 		lastCollisions.add(c);
 	}
 	
@@ -55,14 +62,14 @@ public abstract class AbstractShape implements Shape, Transformable {
 	public Orientable transform(Orientable wrt) {
 		return new Orientable() {
 			public DVector2 pos() {
-				return wrt.toBodyFrame(owner().pos());
+				return wrt.futureState().toBodyFrame(owner.futureState().pos());
 			}
 			public void move(DVector2 dPos) {
 				return;
 			}
 
 			public double angle() {
-				return owner.angle() - wrt.angle();
+				return owner.futureState().angle() - wrt.futureState().angle();
 			}
 
 			public void rotate(double dAngle) {
@@ -70,5 +77,4 @@ public abstract class AbstractShape implements Shape, Transformable {
 			}
 		};
 	}
-	
 }

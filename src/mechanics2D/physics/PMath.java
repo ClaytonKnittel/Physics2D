@@ -46,7 +46,7 @@ public class PMath {
 	}
 	
 	private static Force[] collisionForce(Body b1, Body b2, CollisionInformation c) {
-		double e = 1;
+		double e = b1.restitution() * b2.restitution();
 		
 		DVector2 r1 = c.loc().minus(b1.pos());
 		DVector2 r2 = c.loc().minus(b2.pos());
@@ -55,7 +55,7 @@ public class PMath {
 		double p2 = r2.cross(c.dir());
 		
 		double f = (1 + e) * (b1.vel().minus(b2.vel()).dot(c.dir()) + b1.w() * p1 - b2.w() * p2) / (1 / b1.mass() + 1 / b2.mass() + square(p1) / b1.moment() + square(p2) / b2.moment());
-		//System.out.println("Force: \t" + f);
+		System.out.println("Force: \t" + f);
 		
 		return new Force[] {new Force(r1, c.dir().times(-f)), new Force(r2, c.dir().times(f))};
 	}
@@ -65,7 +65,7 @@ public class PMath {
 	}
 	
 	private static Force[] collisionForce(Body b1, PassiveBody wall, CollisionInformation c) {
-		double e = 1;
+		double e = b1.restitution() * wall.restitution();
 		
 		DVector2 r1 = c.loc().minus(b1.pos());
 		

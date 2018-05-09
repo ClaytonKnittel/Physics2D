@@ -14,6 +14,7 @@ import mechanics2D.physics.ForceField;
 import mechanics2D.physics.InteractiveForce;
 import mechanics2D.tests.ConditionalDrawer;
 import mechanics2D.tests.DirectionDrawer;
+import methods.P;
 import tensor.DVector2;
 
 import static java.awt.Color.*;
@@ -43,16 +44,19 @@ public class Main {
 		Ball b2 = new Ball(150, 250, 50, 0, 30, 14, colors[1]);
 		Ball b3 = new Ball(328, 250, 0, 0, 30, 14, colors[2]);
 		
+		b1.setRestitution(.7);
 		
-		Box box = new Box(200, 400, 40, -70, 20, 100, 40, Color.ORANGE);
-		box.setAngle(1);
-		box.setW(0.1);
+		Box box = new Box(200, 400, 40, 70, 20, 100, 40, Color.ORANGE);
+		box.setAngle(0);
+		box.setW(.1);
+		box.setRestitution(.8);
 		
-		Box box2 = new Box(400, 220.1, 50, -50, 20, 30, 100, Color.BLUE);
-		box2.setAngle(Math.PI / 4);
-		box2.setW(4);
+		Box box2 = new Box(200, 330, 40, 0, 20, 100, 30, Color.BLUE);
+		box2.setAngle(0);
+		box2.setW(.07);
+		box2.setRestitution(.8);
 		
-		ForceField gravity = new ForceField(b -> new Force(DVector2.ZERO, DVector2.Y.times(980 * b.mass())));
+		ForceField gravity = new ForceField(b -> new Force(DVector2.ZERO, DVector2.Y.times(200 * b.mass())));
 		
 		InteractiveForce attractor = new InteractiveForce((body1, body2) -> new Force(DVector2.ZERO, body2.pos().minus(body1.pos())));
 		
@@ -87,14 +91,14 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(b1, b2);
+		//s.add(b1);
 		//s.add(balls);
-		//s.add(box);
+		s.add(box, box2);
 		//s.add(box2);
 		//s.add(mid);
 		s.add(south, north, east, west);
 		s.add(dir);
-		//s.add(gravity);
+		s.addPhysics(gravity);
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.render();
@@ -103,8 +107,8 @@ public class Main {
 			s.physUpdate();
 		}, PMath.dt, false, "physics");
 		ThreadMaster info = new ThreadMaster(() -> {
-			System.out.println(graphics);
-			System.out.println(physics);
+			P.pl(graphics);
+			P.pl(physics);
 		}, 1, false, "info");
 		
 		Controller controller = new Controller(

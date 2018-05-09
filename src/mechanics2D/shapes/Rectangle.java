@@ -110,7 +110,7 @@ public class Rectangle extends AbstractShape {
 					else															// colliding with top or bottom wall
 						dir = py > 0 ? Math.PI / 2 : 3 * Math.PI / 2;
 						
-					addCollision(new CollisionInformation(new DVector2(px, py), dir));
+					addCollision(transed(new CollisionInformation(new DVector2(px, py), dir)));
 				}
 				if (a == -1)
 					b *= -1;
@@ -146,18 +146,18 @@ public class Rectangle extends AbstractShape {
 				if (to.mag2() > PMath.square(c.radius()))
 					return false;
 				
-				addCollision(new CollisionInformation(new DVector2(hlen, hheight), to.angle()));
+				addCollision(transed(new CollisionInformation(new DVector2(hlen, hheight), to.angle())));
 			} else {												// colliding with side of rectangle
 				if (Math.abs(x - hlen) > c.radius())
 					return false;
 				
-				addCollision(new CollisionInformation(new DVector2(hlen, y), x > 0 ? 0 : Math.PI));
+				addCollision(transed(new CollisionInformation(new DVector2(hlen, y), x > 0 ? 0 : Math.PI)));
 			}
 		} else if (Math.abs(y) > Math.abs(hheight)) {				// colliding with top/bottom of rectangle
 			if (Math.abs(y - hheight) > c.radius())
 				return false;
 			
-			addCollision(new CollisionInformation(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2));
+			addCollision(transed(new CollisionInformation(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2)));
 		} else {													// shouldn't happen
 			System.err.println("Circle inside rectangle");
 			return false;

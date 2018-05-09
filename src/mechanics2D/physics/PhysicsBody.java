@@ -11,6 +11,15 @@ public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsCo
 	void addImpulse(Force f);
 	void resolveCollisions();
 	void addCollision(PhysicsBody other, CollisionInformation collision);
+	double restitution();
+	
+	boolean interact(PhysicsBody other);
+	
+	/**
+	 * Computes where this body will be next frame, ignoring contact / collision forces.
+	 * Used by the collision detection algorithms
+	 */
+	void computeFutureState();
 	
 	static boolean is(Object o) {
 		return PhysicsBody.class.isAssignableFrom(o.getClass());
