@@ -150,6 +150,8 @@ public abstract class Body implements PhysicsBody {
 	}
 	
 	public void applyForces() {
+		vel = future.vel;
+		w = future.w;
 		for (Force f : netForce) {
 			vel.add(f.force().times(PMath.dt / mass));
 			
@@ -176,6 +178,9 @@ public abstract class Body implements PhysicsBody {
 			
 			future.w += f.torque() / I;
 		}
+		future.pos.add(future.vel.times(PMath.dt));
+		future.phi += w * PMath.dt;
+		resetForces();
 	}
 	
 	public void update() {

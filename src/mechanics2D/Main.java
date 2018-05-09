@@ -15,6 +15,8 @@ import mechanics2D.physics.InteractiveForce;
 import mechanics2D.tests.ConditionalDrawer;
 import mechanics2D.tests.DirectionDrawer;
 import methods.P;
+import tensor.DMatrixN;
+import tensor.DMatrixS;
 import tensor.DVector2;
 
 import static java.awt.Color.*;
@@ -28,6 +30,11 @@ public class Main {
 	}
 	
 	public static void main(String args[]) {
+		DMatrixS i = DMatrixS.interactionMatrix(new Integer[] {1, 2, 3}, (a, b) -> a + b);
+		System.out.println(i);
+		
+		//System.exit(0);
+		
 		Screen s = new Screen(600, 500);
 		
 		Color[] colors = new Color[] {

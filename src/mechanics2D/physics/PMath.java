@@ -72,7 +72,7 @@ public class PMath {
 		double p1 = r1.cross(c.dir());
 		
 		double f = (1 + e) * (b1.vel().dot(c.dir()) + b1.w() * p1) / (1 / b1.mass() + square(p1) / b1.moment());
-		//System.out.println("Wall collide: " + f + " " + (b1.mass() * b1.vel().mag() * 2));
+		System.out.println("Wall collide: " + f + " " + (b1.mass() * b1.vel().mag() * 2));
 		
 		return new Force[] {new Force(r1, c.dir().times(-f)), null};
 	}
