@@ -1,6 +1,5 @@
 package mechanics2D.physics;
 
-import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Orientable;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
@@ -36,6 +35,16 @@ public abstract class PassiveBody implements PhysicsBody {
 	public DVector2 pos() {
 		return pos;
 	}
+	
+	@Override
+	public DVector2 vel() {
+		return DVector2.ZERO;
+	}
+	
+	@Override
+	public DVector2 acc() {
+		return DVector2.ZERO;
+	}
 
 	@Override
 	public void move(DVector2 dPos) {
@@ -53,8 +62,23 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
+	public double w() {
+		return 0;
+	}
+	
+	@Override
+	public double dW() {
+		return 0;
+	}
+	
+	@Override
 	public double mass() {
 		return mass;
+	}
+	
+	@Override
+	public double moment() {
+		return 0;
 	}
 
 	@Override
@@ -68,6 +92,11 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
+	public void appendFutureState() {
+		return;
+	}
+	
+	@Override
 	public Orientable futureState() {
 		return this;
 	}
@@ -75,17 +104,6 @@ public abstract class PassiveBody implements PhysicsBody {
 	@Override
 	public void update() {
 		return;
-	}
-	
-	@Override
-	public void resolveCollisions() {
-		return;
-	}
-
-	@Override
-	public void addCollision(PhysicsBody other, CollisionInformation collision) {
-		if (1 > 0)
-			throw new ShouldNotCallException("Do not call this method");
 	}
 	
 	@Override

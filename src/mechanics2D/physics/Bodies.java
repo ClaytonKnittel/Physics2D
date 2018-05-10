@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import mechanics2D.graphics.Drawable;
 import mechanics2D.shapes.AbstractShape;
+import mechanics2D.shapes.CollisionInformation;
 import structures.Act;
 import structures.Web;
 
@@ -12,13 +13,13 @@ public class Bodies {
 	private Web<PhysicsBody> bodies;
 	private LinkedList<ForceField> fields;
 	private LinkedList<InteractiveForce> interactions;
-	//private CollisionTracker ct;
+	private MultiForceHandler contactForceHandler;
 	
 	public Bodies() {
 		bodies = new Web<>();
 		fields = new LinkedList<>();
 		interactions = new LinkedList<>();
-		//ct = new CollisionTracker();
+		contactForceHandler = new MultiForceHandler();
 	}
 	
 	private void addPhysicsBody(PhysicsBody...b) {
@@ -27,6 +28,10 @@ public class Bodies {
 	}
 	
 	public void add(PhysicsConstruct... cs) {
+		add(false, cs);
+	}
+	
+	private void add(boolean suspendContactForceUpdate, PhysicsConstruct...cs) {
 		for (PhysicsConstruct c : cs) {
 			if (c instanceof PhysicsBody)
 				addPhysicsBody((PhysicsBody) c);
@@ -37,13 +42,20 @@ public class Bodies {
 			else
 				throw new IllegalArgumentException(c.getClass() + " is not an acceptable PhysicsConstruct");
 		}
+		if (!suspendContactForceUpdate)
+			updateContactForceHandler();
+	}
+	
+	private void updateContactForceHandler() {
+		contactForceHandler = new MultiForceHandler(bodies.toList());
 	}
 	
 	public void attemptAdd(Drawable... drawables) {
 		for (Drawable d : drawables) {
 			if (PhysicsConstruct.class.isAssignableFrom(d.getClass()))
-				add((PhysicsConstruct) d);
+				add(true, (PhysicsConstruct) d);
 		}
+		updateContactForceHandler();
 	}
 	
 	private void addFF(ForceField f) {
@@ -68,14 +80,17 @@ public class Bodies {
 		
 		bodies.actPairs((b1, b2) -> {
 			b1.interact(b2);
+			for (CollisionInformation c : AbstractShape.getCollisions())
+				contactForceHandler.add(b1, b2, c);
 			AbstractShape.clearCollisions();
 		});
 		
-		bodies.act(b -> b.resolveCollisions());
+		bodies.act(b -> b.appendFutureState());
+		
+		contactForceHandler.resolveContacts();
+		//bodies.act(b -> b.resolveCollisions());
 		
 		bodies.act(b -> b.update());
-		
-		//ct.update();
 	}
 	
 	public void act(Act<PhysicsBody> a) {

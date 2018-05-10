@@ -1,16 +1,19 @@
 package mechanics2D.physics;
 
-import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.IsShape;
 import mechanics2D.shapes.Orientable;
+import tensor.DVector2;
 
 public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsConstruct {
+	
+	DVector2 vel();
+	double w();
+	
 	void update();
 	double mass();
+	double moment();
 	void addForce(Force f);
 	void addImpulse(Force f);
-	void resolveCollisions();
-	void addCollision(PhysicsBody other, CollisionInformation collision);
 	double restitution();
 	
 	boolean interact(PhysicsBody other);
@@ -20,6 +23,13 @@ public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsCo
 	 * Used by the collision detection algorithms
 	 */
 	void computeFutureState();
+	/**
+	 * To be called after the future state has already been calculated
+	 * and more forces need to be taken into account
+	 */
+	void appendFutureState();
+	DVector2 acc();	// computed from the computed future state
+	double dW();
 	
 	static boolean is(Object o) {
 		return PhysicsBody.class.isAssignableFrom(o.getClass());

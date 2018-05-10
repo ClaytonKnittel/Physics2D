@@ -2,6 +2,7 @@ package mechanics2D;
 
 import java.awt.Color;
 
+import algorithms.MatrixAlgorithms;
 import mechanics2D.physics.PMath;
 import mechanics2D.physics.Wall;
 import mechanics2D.graphics.Screen;
@@ -18,6 +19,7 @@ import methods.P;
 import tensor.DMatrixN;
 import tensor.DMatrixS;
 import tensor.DVector2;
+import tensor.DVectorN;
 
 import static java.awt.Color.*;
 
@@ -33,7 +35,15 @@ public class Main {
 		DMatrixS i = DMatrixS.interactionMatrix(new Integer[] {1, 2, 3}, (a, b) -> a + b);
 		System.out.println(i);
 		
-		//System.exit(0);
+		DMatrixN m = new DMatrixN(
+			 1, .3, -.4,
+			 -.2, 1, .3,
+			 .5, -.5, 1);
+		DVectorN be = new DVectorN(.6, -.3, -.9);
+		
+		System.out.println("Answer: " + MatrixAlgorithms.solveConstrainedEqn(m, be));
+		
+		System.exit(0);
 		
 		Screen s = new Screen(600, 500);
 		
@@ -47,11 +57,12 @@ public class Main {
 				balls[l++] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
 		}
 		
-		Ball b1 = new Ball(300, 250, -50, 0, 30, 14, colors[5]);
-		Ball b2 = new Ball(150, 250, 50, 0, 30, 14, colors[1]);
+		Ball b1 = new Ball(300, 250, 0, 0, 30, 14, colors[5]);
+		Ball b2 = new Ball(272, 250, 0, 0, 30, 14, colors[1]);
 		Ball b3 = new Ball(328, 250, 0, 0, 30, 14, colors[2]);
 		
 		b1.setRestitution(.7);
+		b2.setRestitution(.7);
 		
 		Box box = new Box(200, 400, 40, 70, 20, 100, 40, Color.ORANGE);
 		box.setAngle(0);
@@ -98,9 +109,9 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		//s.add(b1);
+		s.add(b1, b2);
 		//s.add(balls);
-		s.add(box, box2);
+		//s.add(box, box2);
 		//s.add(box2);
 		//s.add(mid);
 		s.add(south, north, east, west);

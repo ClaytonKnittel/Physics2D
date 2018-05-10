@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import mechanics2D.graphics.Drawable;
+import structures.Reversible;
 import tensor.DVector2;
 
-public class CollisionInformation implements Drawable {
+public class CollisionInformation implements Drawable, Reversible<CollisionInformation> {
 	
 	private DVector2 dir, loc;
 	
@@ -27,6 +28,11 @@ public class CollisionInformation implements Drawable {
 	
 	public DVector2 loc() {
 		return loc;
+	}
+	
+	@Override
+	public CollisionInformation reverse() {
+		return new CollisionInformation(loc, dir.times(-1));
 	}
 	
 	@Override

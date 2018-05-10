@@ -1,7 +1,5 @@
 package mechanics2D.physics;
 
-import mechanics2D.shapes.AbstractShape;
-import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Orientable;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
@@ -24,8 +22,6 @@ public abstract class Body implements PhysicsBody {
 	
 	private Shape shape;
 	
-	private CollisionList collisions;
-	
 	private double restitution;
 	
 	protected Body(double x, double y, double vx, double vy, double mass, Shape shape) {
@@ -43,8 +39,6 @@ public abstract class Body implements PhysicsBody {
 		netForce = new LinkedList<>();
 		netImpulse = new LinkedList<>();
 		resetForces();
-		
-		collisions = new CollisionList();
 	}
 	
 	public void setRestitution(double r) {
@@ -56,21 +50,8 @@ public abstract class Body implements PhysicsBody {
 		return restitution;
 	}
 	
-	@Override
-	public void addCollision(PhysicsBody other, CollisionInformation c) {
-		collisions.add(other, c);
-	}
-	
-	public void resolveCollisions() {
-		for (CollisionList.BodyCollisionPair bc : collisions)
-			PMath.collisionForce(this, bc.other(), bc.collision());
-		collisions.clear();
-	}
-	
 	public boolean interact(PhysicsBody other) {	// find collisions
 		if (other.shape().colliding(shape(), true)) {
-			for (CollisionInformation c : AbstractShape.getCollisions())
-				addCollision(other, c);
 			return true;
 		}
 		return false;
@@ -85,6 +66,7 @@ public abstract class Body implements PhysicsBody {
 		return pos;
 	}
 	
+	@Override
 	public DVector2 vel() {
 		return vel;
 	}
@@ -163,24 +145,48 @@ public abstract class Body implements PhysicsBody {
 			w += f.torque() / I;
 		}
 		resetForces();
+		future = null;
 	}
 	
 	@Override
 	public void computeFutureState() {
-		future = new PhysicalOrientable(pos, vel, phi, w);
+		future = new PhysicalOrientable(pos, vel, DVector2.ZERO, phi, w, 0);
+		compute();
+	}
+	
+	@Override
+	public void appendFutureState() {
+		compute();
+	}
+	
+	private void compute() {
 		for (Force f : netForce) {
-			future.vel.add(f.force().times(PMath.dt / mass));
+			future.acc.add(f.force().divide(mass));
 			
-			future.w += f.torque() * PMath.dt / I;
+			future.dW += f.torque() / I;
 		}
 		for (Force f : netImpulse) {
-			future.vel.add(f.force().divide(mass));
+			future.acc.add(f.force().divide(mass * PMath.dt));
 			
-			future.w += f.torque() / I;
+			future.dW += f.torque() / I / PMath.dt;
 		}
-		future.pos.add(future.vel.times(PMath.dt));
-		future.phi += w * PMath.dt;
+		future.vel = vel.plus(future.acc.times(PMath.dt));
+		future.pos = pos.plus(future.vel.times(PMath.dt));
+		
+		future.w = w + future.dW * PMath.dt;
+		future.phi = phi + future.w * PMath.dt;
+		
 		resetForces();
+	}
+	
+	@Override
+	public DVector2 acc() {
+		return future.acc;
+	}
+	
+	@Override
+	public double dW() {
+		return future.dW;
 	}
 	
 	public void update() {
@@ -199,14 +205,16 @@ public abstract class Body implements PhysicsBody {
 	
 	private static class PhysicalOrientable implements Orientable {
 		
-		private DVector2 pos, vel;
-		private double phi, w;
+		private DVector2 pos, vel, acc;
+		private double phi, w, dW;
 		
-		PhysicalOrientable(DVector2 pos, DVector2 vel, double phi, double w) {
+		PhysicalOrientable(DVector2 pos, DVector2 vel, DVector2 acc, double phi, double w, double dW) {
 			this.pos = new DVector2(pos);
 			this.vel = new DVector2(vel);
+			this.acc = new DVector2(acc);
 			this.phi = phi;
 			this.w = w;
+			this.dW = dW;
 		}
 		
 		@Override

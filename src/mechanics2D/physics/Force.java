@@ -1,6 +1,7 @@
 package mechanics2D.physics;
 
 import mechanics2D.shapes.CollisionInformation;
+import structures.Reversible;
 import tensor.DVector2;
 
 /**
@@ -22,6 +23,11 @@ public class Force extends CollisionInformation {
 	public Force(DVector2 force) {
 		super(DVector2.ZERO, force);
 		torque = 0;
+	}
+	
+	@Override
+	public Force reverse() {
+		return opposite();
 	}
 	
 	public Force opposite() {

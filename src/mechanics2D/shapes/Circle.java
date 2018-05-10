@@ -45,12 +45,12 @@ public class Circle extends AbstractShape {
 	
 	private boolean collidingCircles(Circle c, boolean computeCollisionInfo) {
 		double di = radius + c.radius;
-		DVector2 diff = c.owner().pos().minus(owner().pos());
+		DVector2 diff = c.owner().futureState().pos().minus(owner().futureState().pos());
 		
 		boolean colliding = di * di >= diff.mag2();
 		
 		if (computeCollisionInfo && colliding)
-			addCollision(new CollisionInformation(owner().pos().plus(diff.times(radius / di)), diff.normalized()));
+			addCollision(new CollisionInformation(owner().futureState().pos().plus(diff.times(radius / di)), diff.normalized()));
 		return colliding;
 	}
 	
