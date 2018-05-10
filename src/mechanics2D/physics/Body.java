@@ -175,18 +175,18 @@ public abstract class Body implements PhysicsBody {
 		
 		future.w = w + future.dW * PMath.dt;
 		future.phi = phi + future.w * PMath.dt;
-		
+
 		resetForces();
 	}
 	
 	@Override
 	public DVector2 acc() {
-		return future.acc;
+		return future.acc.times(PMath.dt);
 	}
 	
 	@Override
 	public double dW() {
-		return future.dW;
+		return future.dW * PMath.dt;
 	}
 	
 	public void update() {

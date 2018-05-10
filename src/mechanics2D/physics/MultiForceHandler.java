@@ -3,7 +3,9 @@ package mechanics2D.physics;
 import java.util.LinkedList;
 import java.util.List;
 
+import algorithms.MatrixAlgorithms;
 import mechanics2D.shapes.CollisionInformation;
+import methods.P;
 import structures.InteractionSet;
 import structures.InteractionSet.Connection;
 import tensor.DMatrixN;
@@ -44,19 +46,29 @@ public class MultiForceHandler {
 				// need to compute the affect of connection 2 on connectio 1
 				if (connection1 == connection2)
 					return 1;
-				PhysicsBody b;
-				b = connection1.from();
-				double a1 = aij(b, connection1.connector(b), connection2.connector(b));
-				b = connection1.to();
-				a1 += aij(b, connection1.connector(b), connection2.connector(b));
+				double a1 = aij(connection1.from(), connection1.connector(), connection2.connector());
+				a1 += aij(connection1.to(), connection1.connector(), connection2.connector());
 				
 				return a1;
 			});
-			System.out.println("Matrix:\n" + a);
+			//System.out.println("Matrix:\n" + a);
 			
-			DVectorN b = DVectorN.functionalMap(c, d -> b(d.to(), d.from(), d.connector(d.to())));
+			//FIXME
+			DVectorN b = DVectorN.functionalMap(c, d -> b(d.to(), d.from(), d.connector()));
 			
-			System.out.println("b: " + b);
+			//System.out.println("b: " + b);
+			
+			DVectorN forces = MatrixAlgorithms.solveConstrainedEqn(a, b);
+			//P.pl(forces);
+			
+			double strength;
+			for (int i = 0; i < forces.dim(); i++) {
+				strength = forces.get(i);
+				c[i].to().addImpulse(new Force(c[i].connector(), strength));
+				c[i].from().addImpulse(new Force(c[i].connector(), -strength));
+				c[i].from().appendFutureState();
+				//P.pl(c[i].from().acc() + " " + c[i].from().vel());
+			}
 		}
 		
 		contacts.clear();
@@ -76,7 +88,7 @@ public class MultiForceHandler {
 		return i.dir().dot(j.dir().divide(body.mass()).minus(r.crossPerp(r.cross(j.dir())).divide(body.moment())));
 	}
 	
-	private double b(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) {
+	private double b(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) { //FIXME
 		DVector2 r1 = b1.pos().minus(c.loc());
 		DVector2 r2 = b2.pos().minus(c.loc());
 		
@@ -90,6 +102,7 @@ public class MultiForceHandler {
 				.plus(r1.crossPerp(b1.dW()).minus(r2.crossPerp(b2.w())))
 				.minus(t1.crossPerp(b1.w())).plus(t2.crossPerp(b2.w())));
 		
+		P.pl((-(b2.acc().y() + b2.vel().y()) * b2.mass()) + " " + (twist + lin));
 		return twist + lin;
 	}
 	

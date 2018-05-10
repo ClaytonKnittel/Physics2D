@@ -32,18 +32,19 @@ public class Main {
 	}
 	
 	public static void main(String args[]) {
-		DMatrixS i = DMatrixS.interactionMatrix(new Integer[] {1, 2, 3}, (a, b) -> a + b);
-		System.out.println(i);
-		
-		DMatrixN m = new DMatrixN(
-			 1, .3, -.4,
-			 -.2, 1, .3,
-			 .5, -.5, 1);
-		DVectorN be = new DVectorN(.6, -.3, -.9);
-		
-		System.out.println("Answer: " + MatrixAlgorithms.solveConstrainedEqn(m, be));
-		
-		System.exit(0);
+//		DMatrixS i = DMatrixS.interactionMatrix(new Integer[] {1, 2, 3}, (a, b) -> a + b);
+//		System.out.println(i);
+//		
+//		DMatrixN m = new DMatrixN(
+//			 1, .3, -.4, .13,
+//			 -.2, 1, .3, .9,
+//			 .5, -.5, 1, .22,
+//			 -.23, -1.1, 1.0, 1);
+//		DVectorN be = new DVectorN(-.6, -.3, -.9, -.1);
+//		
+//		System.out.println("Answer: " + MatrixAlgorithms.solveConstrainedEqn(m, be));
+//		
+//		System.exit(0);
 		
 		Screen s = new Screen(600, 500);
 		
@@ -59,7 +60,7 @@ public class Main {
 		
 		Ball b1 = new Ball(300, 250, 0, 0, 30, 14, colors[5]);
 		Ball b2 = new Ball(272, 250, 0, 0, 30, 14, colors[1]);
-		Ball b3 = new Ball(328, 250, 0, 0, 30, 14, colors[2]);
+		Ball b3 = new Ball(357, 250, -10, 0, 30, 14, colors[2]);
 		
 		b1.setRestitution(.7);
 		b2.setRestitution(.7);
@@ -109,7 +110,7 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(b1, b2);
+		s.add(b1, b3);
 		//s.add(balls);
 		//s.add(box, box2);
 		//s.add(box2);

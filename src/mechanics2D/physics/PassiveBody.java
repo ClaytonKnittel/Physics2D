@@ -26,6 +26,10 @@ public abstract class PassiveBody implements PhysicsBody {
 		this.restitution = r;
 	}
 	
+	public static boolean is(Object o) {
+		return PassiveBody.class.isAssignableFrom(o.getClass());
+	}
+	
 	@Override
 	public double restitution() {
 		return restitution;
