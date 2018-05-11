@@ -10,7 +10,7 @@ import mechanics2D.physics.PhysicsConstruct;
 public class Screen extends JFrame {
 	private static final long serialVersionUID = -207531079449884642L;
 	
-	public static float dt = .01f;
+	public static float dt = .02f;
 	private Drawer drawer;
 	private Bodies bodies;
 	

@@ -1,6 +1,8 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Orientable;
+import mechanics2D.shapes.Rectangle;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
@@ -51,10 +53,7 @@ public abstract class Body implements PhysicsBody {
 	}
 	
 	public boolean interact(PhysicsBody other) {	// find collisions
-		if (other.shape().colliding(shape(), true)) {
-			return true;
-		}
-		return false;
+		return other.shape().colliding(shape(), true);
 	}
 	
 	public static boolean is(Object o) {
@@ -63,11 +62,20 @@ public abstract class Body implements PhysicsBody {
 	
 	@Override
 	public DVector2 pos() {
-		return pos;
+		if (future == null)
+			return pos;
+		return future.pos;
 	}
 	
 	@Override
 	public DVector2 vel() {
+		if (future == null)
+			return vel;
+		return future.vel;
+	}
+	
+	@Override
+	public DVector2 currentVel() {
 		return vel;
 	}
 	
@@ -78,14 +86,24 @@ public abstract class Body implements PhysicsBody {
 	
 	@Override
 	public double angle() {
-		return phi;
+		if (future == null)
+			return phi;
+		return future.phi;
 	}
 	
 	public void setAngle(double phi) {
 		this.phi = phi;
 	}
 	
+	@Override
 	public double w() {
+		if (future == null)
+			return w;
+		return future.w;
+	}
+	
+	@Override
+	public double currentW() {
 		return w;
 	}
 	
@@ -119,11 +137,6 @@ public abstract class Body implements PhysicsBody {
 	@Override
 	public void addImpulse(Force force) {
 		netImpulse.add(force);
-	}
-	
-	@Override
-	public Orientable futureState() {
-		return future;
 	}
 	
 	private void resetForces() {
@@ -193,6 +206,17 @@ public abstract class Body implements PhysicsBody {
 		applyForces();
 		pos.add(vel.times(PMath.dt));
 		phi += w * PMath.dt;
+	}
+	
+	@Override
+	public DVector2 nPrime(PhysicsBody b2, CollisionInformation c) {
+		if (PassiveBody.is(b2))
+			return b2.nPrime(this, c);
+		if (shape() instanceof Rectangle) {
+			return c.dir().crossPerp(w);
+		} else {
+			return DVector2.ZERO;
+		}
 	}
 	
 	public double energy() {

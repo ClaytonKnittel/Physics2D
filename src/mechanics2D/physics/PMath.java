@@ -60,7 +60,7 @@ public class PMath {
 		double p1 = r1.cross(c.dir());
 		double p2 = r2.cross(c.dir());
 		
-		double f = (1 + e) * (b1.vel().minus(b2.vel()).dot(c.dir()) + b1.w() * p1 - b2.w() * p2) / (1 / b1.mass() + 1 / b2.mass() + square(p1) / b1.moment() + square(p2) / b2.moment());
+		double f = (1 + e) * (b1.currentVel().minus(b2.currentVel()).dot(c.dir()) + b1.currentW() * p1 - b2.currentW() * p2) / (1 / b1.mass() + 1 / b2.mass() + square(p1) / b1.moment() + square(p2) / b2.moment());
 //		System.out.println("Force: \t" + f);
 		
 		return new Force[] {new Force(r1, c.dir().times(-f)), new Force(r2, c.dir().times(f))};
@@ -77,7 +77,7 @@ public class PMath {
 		
 		double p1 = r1.cross(c.dir());
 		
-		double f = (1 + e) * (b1.vel().dot(c.dir()) + b1.w() * p1) / (1 / b1.mass() + square(p1) / b1.moment());
+		double f = (1 + e) * (b1.currentVel().dot(c.dir()) + b1.currentW() * p1) / (1 / b1.mass() + square(p1) / b1.moment());
 //		System.out.println("Wall collide: " + f + " " + (b1.mass() * b1.vel().mag() * 2));
 		
 		return new Force[] {new Force(r1, c.dir().times(-f)), null};

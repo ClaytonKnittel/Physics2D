@@ -3,6 +3,7 @@ package mechanics2D.physics;
 import java.awt.Color;
 
 import mechanics2D.shapes.Circle;
+import tensor.DVector2;
 
 public class Ball extends Body {
 	

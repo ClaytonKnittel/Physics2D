@@ -1,6 +1,7 @@
 package mechanics2D.physics;
 
-import mechanics2D.shapes.Orientable;
+import mechanics2D.shapes.CollisionInformation;
+import mechanics2D.shapes.Circle;
 import mechanics2D.shapes.Shape;
 import tensor.DVector2;
 
@@ -46,6 +47,11 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
+	public DVector2 currentVel() {
+		return DVector2.ZERO;
+	}
+	
+	@Override
 	public DVector2 acc() {
 		return DVector2.ZERO;
 	}
@@ -71,8 +77,21 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
+	public double currentW() {
+		return 0;
+	}
+	
+	@Override
 	public double dW() {
 		return 0;
+	}
+	
+	@Override
+	public DVector2 nPrime(PhysicsBody b2, CollisionInformation c) {
+		if (shape instanceof Circle) {
+			
+		}
+		return DVector2.ZERO;
 	}
 	
 	@Override
@@ -98,11 +117,6 @@ public abstract class PassiveBody implements PhysicsBody {
 	@Override
 	public void appendFutureState() {
 		return;
-	}
-	
-	@Override
-	public Orientable futureState() {
-		return this;
 	}
 	
 	@Override

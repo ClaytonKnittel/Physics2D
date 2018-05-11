@@ -1,5 +1,6 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.IsShape;
 import mechanics2D.shapes.Orientable;
 import tensor.DVector2;
@@ -7,7 +8,9 @@ import tensor.DVector2;
 public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsConstruct {
 	
 	DVector2 vel();
+	DVector2 currentVel();
 	double w();
+	double currentW();
 	
 	void update();
 	double mass();
@@ -30,6 +33,8 @@ public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsCo
 	void appendFutureState();
 	DVector2 acc();	// computed from the computed future state
 	double dW();
+	
+	DVector2 nPrime(PhysicsBody b2, CollisionInformation c);
 	
 	static boolean is(Object o) {
 		return PhysicsBody.class.isAssignableFrom(o.getClass());

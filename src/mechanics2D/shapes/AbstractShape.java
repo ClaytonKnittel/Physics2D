@@ -62,14 +62,14 @@ public abstract class AbstractShape implements Shape, Transformable {
 	public Orientable transform(Orientable wrt) {
 		return new Orientable() {
 			public DVector2 pos() {
-				return wrt.futureState().toBodyFrame(owner.futureState().pos());
+				return wrt.toBodyFrame(owner.pos());
 			}
 			public void move(DVector2 dPos) {
 				return;
 			}
 
 			public double angle() {
-				return owner.futureState().angle() - wrt.futureState().angle();
+				return owner.angle() - wrt.angle();
 			}
 
 			public void rotate(double dAngle) {
