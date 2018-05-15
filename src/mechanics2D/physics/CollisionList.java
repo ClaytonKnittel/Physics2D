@@ -17,7 +17,7 @@ public class CollisionList implements Iterable<CollisionList.BodyCollisionPair> 
 		return collisions.isEmpty();
 	}
 	
-	public void add(PhysicsBody b, CollisionInformation c) {
+	public void add(Body b, CollisionInformation c) {
 		collisions.add(new BodyCollisionPair(b, c));
 	}
 	
@@ -26,11 +26,11 @@ public class CollisionList implements Iterable<CollisionList.BodyCollisionPair> 
 	 * @param b
 	 */
 	@SuppressWarnings("unlikely-arg-type")
-	public void remove(PhysicsBody b) {
+	public void remove(Body b) {
 		while (collisions.remove(b));
 	}
 	
-	public void remove(PhysicsBody b, CollisionInformation c) {
+	public void remove(Body b, CollisionInformation c) {
 		collisions.remove(new BodyCollisionPair(b, c));
 	}
 	
@@ -39,15 +39,15 @@ public class CollisionList implements Iterable<CollisionList.BodyCollisionPair> 
 	}
 	
 	public static class BodyCollisionPair {
-		private PhysicsBody other;
+		private Body other;
 		private CollisionInformation collision;
 		
-		public BodyCollisionPair(PhysicsBody other, CollisionInformation c) {
+		public BodyCollisionPair(Body other, CollisionInformation c) {
 			this.other = other;
 			this.collision = c;
 		}
 		
-		public PhysicsBody other() {
+		public Body other() {
 			return other;
 		}
 		
@@ -56,7 +56,7 @@ public class CollisionList implements Iterable<CollisionList.BodyCollisionPair> 
 		}
 		
 		public boolean equals(Object o) {
-			if (o instanceof PhysicsBody)
+			if (o instanceof Body)
 				return other == o;
 			if (o instanceof BodyCollisionPair) {
 				BodyCollisionPair b = (BodyCollisionPair) o;

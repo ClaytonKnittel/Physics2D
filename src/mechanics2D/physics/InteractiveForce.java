@@ -8,13 +8,13 @@ public class InteractiveForce implements PhysicsConstruct {
 		this.force = force;
 	}
 	
-	public void interact(PhysicsBody b1, PhysicsBody b2) {
+	public void interact(Body b1, Body b2) {
 		Force f = force.interact(b1, b2);
 		b1.addForce(f);
 		b2.addForce(f.opposite());
 	}
 	
-	public Force getForce(PhysicsBody b1, PhysicsBody b2) {
+	public Force getForce(Body b1, Body b2) {
 		return force.interact(b1, b2);
 	}
 	
@@ -25,7 +25,7 @@ public class InteractiveForce implements PhysicsConstruct {
 	 *
 	 */
 	public static interface Interactive {
-		Force interact(PhysicsBody b1, PhysicsBody b2);
+		Force interact(Body b1, Body b2);
 	}
 	
 }

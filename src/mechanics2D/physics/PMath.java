@@ -16,7 +16,7 @@ public class PMath {
 	 * @param b2 Body 2
 	 * @return force of b2 on b1 due to gravity
 	 */
-	public static void gForce(PhysicsBody b1, PhysicsBody b2) {
+	public static void gForce(Body b1, Body b2) {
 		DVector2 r = b2.pos().minus(b1.pos());
 		double d = r.mag2();
 		r.normalize();
@@ -26,7 +26,7 @@ public class PMath {
 		b2.addForce(f.opposite());
 	}
 	
-	public static double gPotential(PhysicsBody b1, PhysicsBody b2) {
+	public static double gPotential(Body b1, Body b2) {
 		double d = b2.pos().minus(b1.pos()).mag();
 		return -G * b1.mass() * b2.mass() / d;
 	}
@@ -36,14 +36,14 @@ public class PMath {
 	 * @param pb2
 	 * @param c collision with normal pointing away from the surface of pb1
 	 */
-	public static void collisionForce(PhysicsBody pb1, PhysicsBody pb2, CollisionInformation c) {
+	public static void collisionForce(Body pb1, Body pb2, CollisionInformation c) {
 		Force[] forces;
-		if (Body.is(pb1) && Body.is(pb2))
-			forces = collisionForce((Body) pb1, (Body) pb2, c);
-		else if (Body.is(pb1))
-			forces = collisionForce((Body) pb1, (PassiveBody) pb2, c);
-		else if (Body.is(pb2))
-			forces = collisionForce((PassiveBody) pb1, (Body) pb2, c);
+		if (!PassiveBody.is(pb1) && !PassiveBody.is(pb2))
+			forces = cForce((Body) pb1, (Body) pb2, c);
+		else if (!PassiveBody.is(pb1))
+			forces = cForce((Body) pb1, (PassiveBody) pb2, c);
+		else if (!PassiveBody.is(pb2))
+			forces = cForce((PassiveBody) pb1, (Body) pb2, c);
 		else
 			return;
 		
@@ -51,7 +51,7 @@ public class PMath {
 		pb2.addImpulse(forces[1]);
 	}
 	
-	private static Force[] collisionForce(Body b1, Body b2, CollisionInformation c) {
+	private static Force[] cForce(Body b1, Body b2, CollisionInformation c) {
 		double e = b1.restitution() * b2.restitution();
 		
 		DVector2 r1 = c.loc().minus(b1.pos());
@@ -66,11 +66,11 @@ public class PMath {
 		return new Force[] {new Force(r1, c.dir().times(-f)), new Force(r2, c.dir().times(f))};
 	}
 	
-	private static Force[] collisionForce(PassiveBody wall, Body b2, CollisionInformation c) {
-		return new Force[] {null, collisionForce(b2, wall, c)[0]};
+	private static Force[] cForce(PassiveBody wall, Body b2, CollisionInformation c) {
+		return new Force[] {null, cForce(b2, wall, c)[0]};
 	}
 	
-	private static Force[] collisionForce(Body b1, PassiveBody wall, CollisionInformation c) {
+	private static Force[] cForce(Body b1, PassiveBody wall, CollisionInformation c) {
 		double e = b1.restitution() * wall.restitution();
 		
 		DVector2 r1 = c.loc().minus(b1.pos());

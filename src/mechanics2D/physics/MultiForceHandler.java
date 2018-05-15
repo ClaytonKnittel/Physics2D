@@ -17,9 +17,9 @@ public class MultiForceHandler {
 	// the perpendicular velocity below which a collision is considered a contact
 	private static final double threshold = 1;
 	
-	private InteractionSet<PhysicsBody, CollisionInformation> contacts;
+	private InteractionSet<Body, CollisionInformation> contacts;
 	
-	public MultiForceHandler(List<PhysicsBody> bodies) {
+	public MultiForceHandler(List<Body> bodies) {
 		contacts = new InteractionSet<>(bodies);
 	}
 	
@@ -27,7 +27,7 @@ public class MultiForceHandler {
 		this(new LinkedList<>());
 	}
 	
-	public void add(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) {
+	public void add(Body b1, Body b2, CollisionInformation c) {
 		if (isContact(b1, b2, c))
 			contacts.add(c, b1, b2);
 		else
@@ -38,9 +38,9 @@ public class MultiForceHandler {
 		if (contacts.empty())
 			return;
 		
-		List<Connection<PhysicsBody, CollisionInformation>[]> groups = contacts.groups();
+		List<Connection<Body, CollisionInformation>[]> groups = contacts.groups();
 		
-		for (Connection<PhysicsBody, CollisionInformation>[] c : groups) {
+		for (Connection<Body, CollisionInformation>[] c : groups) {
 			
 			DMatrixN a = DMatrixN.interactionMatrix(c, (connection1, connection2) -> {
 				// need to compute the affect of connection 2 on connectio 1
@@ -65,7 +65,6 @@ public class MultiForceHandler {
 //				P.pl("Strengtha: " + strength + "\n");
 				c[i].to().addImpulse(new Force(c[i].connector(), c[i].to().pos(), -strength));
 				c[i].from().addImpulse(new Force(c[i].connector(), c[i].from().pos(), strength));
-				c[i].from().appendFutureState();
 			}
 		}
 		
@@ -79,7 +78,7 @@ public class MultiForceHandler {
 	 * @param j
 	 * @return the effect of the force at collision point j on collision point i's acceleration
 	 */
-	private double aij(PhysicsBody body, CollisionInformation i, CollisionInformation j) {
+	private double aij(Body body, CollisionInformation i, CollisionInformation j) {
 		if (i == null || j == null)
 			return 0;
 		if (PassiveBody.is(body))
@@ -97,7 +96,7 @@ public class MultiForceHandler {
 	 * @param c
 	 * @return
 	 */
-	private double b(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) { //FIXME
+	private double b(Body b1, Body b2, CollisionInformation c) { //FIXME
 		DVector2 r1 = b1.pos().minus(c.loc());
 		DVector2 r2 = b2.pos().minus(c.loc());
 		
@@ -115,18 +114,16 @@ public class MultiForceHandler {
 				.plus(r1.crossPerp(b1.dW()).minus(r2.crossPerp(b2.dW())))
 				.minus(t1.crossPerp(b1.futureW())).plus(t2.crossPerp(b2.futureW()))); // n . (p1'' - p2'')
 		
-		double zeroVel = c.dir().dot(b2.vel().minus(b1.vel()));
+		double zeroVel = c.dir().dot(b2.vel().minus(b1.vel())) * 0;
 		
-//		P.pl("w: " + b2.w());
 		P.pl("current vel: " + b2.vel());
-		P.pl("future vel: " + b2.futureVel());
-//		P.pl("p1'-p2': " + dP);
+//		P.pl("future vel: " + b2.futureVel());
 		
-		P.pl("(" + twist + ", " + lin + ", " + zeroVel + ") = " + (twist + lin + zeroVel));
+//		P.pl("(" + twist + ", " + lin + ", " + zeroVel + ") = " + (twist + lin + zeroVel));
 		return twist + lin + zeroVel;
 	}
 	
-	private boolean isContact(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) {
+	private boolean isContact(Body b1, Body b2, CollisionInformation c) {
 		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold;
 	}
 	

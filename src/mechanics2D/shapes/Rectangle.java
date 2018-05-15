@@ -66,7 +66,6 @@ public class Rectangle extends AbstractShape {
 	 */
 	private boolean collidingRects(Rectangle r, boolean first, boolean compute) {
 		Orientable rPos = r.transform(super.owner());
-//		Orientable rPos = transform(r.owner());
 		
 		double hlength = r.length / 2;
 		double hheight = r.height / 2;

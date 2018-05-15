@@ -8,17 +8,17 @@ public class ForceField implements PhysicsConstruct {
 		this.field = field;
 	}
 	
-	public void interact(PhysicsBody body) {
-		PhysicsBody b = (PhysicsBody) body;
+	public void interact(Body body) {
+		Body b = (Body) body;
 		b.addForce(field.getForce(b));
 	}
 	
-	public Force getForce(PhysicsBody body) {
+	public Force getForce(Body body) {
 		return field.getForce(body);
 	}
 	
 	public interface Field {
-		Force getForce(PhysicsBody b);
+		Force getForce(Body b);
 	}
 	
 }

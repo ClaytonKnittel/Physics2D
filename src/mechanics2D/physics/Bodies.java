@@ -10,7 +10,7 @@ import structures.Web;
 
 public class Bodies {
 	
-	private Web<PhysicsBody> bodies;
+	private Web<Body> bodies;
 	private LinkedList<ForceField> fields;
 	private LinkedList<InteractiveForce> interactions;
 	private MultiForceHandler contactForceHandler;
@@ -22,8 +22,8 @@ public class Bodies {
 		contactForceHandler = new MultiForceHandler();
 	}
 	
-	private void addPhysicsBody(PhysicsBody...b) {
-		for (PhysicsBody bo : b)
+	private void addPhysicsBody(Body...b) {
+		for (Body bo : b)
 			bodies.add(bo);
 	}
 	
@@ -33,8 +33,8 @@ public class Bodies {
 	
 	private void add(boolean suspendContactForceUpdate, PhysicsConstruct...cs) {
 		for (PhysicsConstruct c : cs) {
-			if (c instanceof PhysicsBody)
-				addPhysicsBody((PhysicsBody) c);
+			if (c instanceof Body)
+				addPhysicsBody((Body) c);
 			else if (c instanceof ForceField)
 				addFF((ForceField) c);
 			else if (c instanceof InteractiveForce)
@@ -66,7 +66,7 @@ public class Bodies {
 		interactions.add(f);
 	}
 	
-	public boolean contains(PhysicsBody b) {
+	public boolean contains(Body b) {
 		return bodies.contains(b);
 	}
 	
@@ -88,12 +88,11 @@ public class Bodies {
 		bodies.act(b -> b.appendFutureState());
 		
 		contactForceHandler.resolveContacts();
-		//bodies.act(b -> b.resolveCollisions());
 		
 		bodies.act(b -> b.update());
 	}
 	
-	public void act(Act<PhysicsBody> a) {
+	public void act(Act<Body> a) {
 		bodies.act(a);
 	}
 	
