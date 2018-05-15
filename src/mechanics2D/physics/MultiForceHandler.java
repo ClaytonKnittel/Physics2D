@@ -49,12 +49,12 @@ public class MultiForceHandler {
 				
 				return a1;
 			});
-			System.out.println("Matrix:\n" + a);
+//			System.out.println("Matrix:\n" + a);
 			
 			//FIXME
 			DVectorN b = DVectorN.functionalMap(c, d -> b(d.to(), d.from(), d.connector()));
 			
-			System.out.println("b: " + b);
+//			System.out.println("b: " + b);
 			
 			DVectorN forces = MatrixAlgorithms.solveConstrainedEqn(a, b);
 			//P.pl(forces);
@@ -62,9 +62,9 @@ public class MultiForceHandler {
 			double strength;
 			for (int i = 0; i < forces.dim(); i++) {
 				strength = forces.get(i);
-				P.pl("Strengtha: " + strength);
-				c[i].to().addImpulse(new Force(c[i].connector(), -strength));
-				c[i].from().addImpulse(new Force(c[i].connector(), strength));
+//				P.pl("Strengtha: " + strength + "\n");
+				c[i].to().addImpulse(new Force(c[i].connector(), c[i].to().pos(), -strength));
+				c[i].from().addImpulse(new Force(c[i].connector(), c[i].from().pos(), strength));
 				c[i].from().appendFutureState();
 			}
 		}
@@ -87,7 +87,6 @@ public class MultiForceHandler {
 		
 		DVector2 r = i.loc().minus(body.pos());
 		DVector2 rj = j.loc().minus(body.pos());
-		System.out.println(rj);
 		return i.dir().dot(j.dir().divide(body.mass()).minus(r.crossPerp(rj.cross(j.dir())).divide(body.moment())));
 	}
 	
@@ -102,30 +101,33 @@ public class MultiForceHandler {
 		DVector2 r1 = b1.pos().minus(c.loc());
 		DVector2 r2 = b2.pos().minus(c.loc());
 		
-		DVector2 t1 = r1.crossPerp(b1.w());
-		DVector2 t2 = r2.crossPerp(b2.w());
+		DVector2 t1 = r1.crossPerp(b1.futureW());
+		DVector2 t2 = r2.crossPerp(b2.futureW());
 		
 		DVector2 nPrime = b1.nPrime(b2, c);
 		
-		DVector2 dP = b1.vel().minus(b2.vel()).plus(t1).minus(t2); // velocity of p (p1' - p2')
+		DVector2 dP = b1.futureVel().minus(b2.futureVel()).plus(t1).minus(t2); // velocity of p (p1' - p2')
 		
 		double twist = 2 * nPrime.dot(dP); // n' . (p1' - p2')
 		
 		double lin = -c.dir().dot(
 				b1.acc().minus(b2.acc())
 				.plus(r1.crossPerp(b1.dW()).minus(r2.crossPerp(b2.dW())))
-				.minus(t1.crossPerp(b1.w())).plus(t2.crossPerp(b2.w()))); // n . (p1'' - p2'')
+				.minus(t1.crossPerp(b1.futureW())).plus(t2.crossPerp(b2.futureW()))); // n . (p1'' - p2'')
 		
-		double zeroVel = c.dir().dot(dP) * 0;
+		double zeroVel = c.dir().dot(b2.vel().minus(b1.vel()));
 		
-		P.pl("acvc: " + b2.currentVel());
+//		P.pl("w: " + b2.w());
+		P.pl("current vel: " + b2.vel());
+		P.pl("future vel: " + b2.futureVel());
+//		P.pl("p1'-p2': " + dP);
 		
 		P.pl("(" + twist + ", " + lin + ", " + zeroVel + ") = " + (twist + lin + zeroVel));
 		return twist + lin + zeroVel;
 	}
 	
 	private boolean isContact(PhysicsBody b1, PhysicsBody b2, CollisionInformation c) {
-		return Math.abs(b1.currentVel().minus(b2.currentVel()).dot(c.dir())) < threshold;
+		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold;
 	}
 	
 }

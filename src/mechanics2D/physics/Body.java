@@ -69,14 +69,14 @@ public abstract class Body implements PhysicsBody {
 	
 	@Override
 	public DVector2 vel() {
-		if (future == null)
-			return vel;
-		return future.vel;
+		return vel;
 	}
 	
 	@Override
-	public DVector2 currentVel() {
-		return vel;
+	public DVector2 futureVel() {
+		if (future == null)
+			return vel;
+		return future.vel;
 	}
 	
 	@Override
@@ -97,14 +97,14 @@ public abstract class Body implements PhysicsBody {
 	
 	@Override
 	public double w() {
-		if (future == null)
-			return w;
-		return future.w;
+		return w;
 	}
 	
 	@Override
-	public double currentW() {
-		return w;
+	public double futureW() {
+		if (future == null)
+			return w;
+		return future.w;
 	}
 	
 	public void setW(double w) {

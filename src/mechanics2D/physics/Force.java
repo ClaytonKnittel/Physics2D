@@ -1,7 +1,6 @@
 package mechanics2D.physics;
 
 import mechanics2D.shapes.CollisionInformation;
-import methods.P;
 import tensor.DVector2;
 
 /**
@@ -27,6 +26,10 @@ public class Force extends CollisionInformation {
 	
 	public Force (CollisionInformation c, double strength) {
 		this(c.loc(), c.dir().times(strength));
+	}
+	
+	public Force (CollisionInformation c, DVector2 pos, double strength) {
+		this(c.loc().minus(pos), c.dir().times(strength));
 	}
 	
 	@Override

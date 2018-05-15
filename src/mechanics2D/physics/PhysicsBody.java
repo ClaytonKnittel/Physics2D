@@ -8,9 +8,7 @@ import tensor.DVector2;
 public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsConstruct {
 	
 	DVector2 vel();
-	DVector2 currentVel();
 	double w();
-	double currentW();
 	
 	void update();
 	double mass();
@@ -26,6 +24,8 @@ public interface PhysicsBody extends IsShape, Orientable, Interactive, PhysicsCo
 	 * Used by the collision detection algorithms
 	 */
 	void computeFutureState();
+	DVector2 futureVel();
+	double futureW();
 	/**
 	 * To be called after the future state has already been calculated
 	 * and more forces need to be taken into account

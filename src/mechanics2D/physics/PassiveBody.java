@@ -47,7 +47,7 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
-	public DVector2 currentVel() {
+	public DVector2 futureVel() {
 		return DVector2.ZERO;
 	}
 	
@@ -77,7 +77,7 @@ public abstract class PassiveBody implements PhysicsBody {
 	}
 	
 	@Override
-	public double currentW() {
+	public double futureW() {
 		return 0;
 	}
 	
