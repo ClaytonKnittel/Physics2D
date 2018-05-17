@@ -1,5 +1,6 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.Circle;
 import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.IsShape;
 import mechanics2D.shapes.Orientable;
@@ -205,6 +206,22 @@ public abstract class Body implements IsShape, Orientable, Interactive, PhysicsC
 		} else {
 			return DVector2.ZERO;
 		}
+	}
+	
+	/**
+	 * @param r1 a point relative to the center of this body
+	 * @return r1'', the second time derivative of this contact point on the surface of this body
+	 */
+	public DVector2 dP(DVector2 r1) {
+		if (!(shape instanceof Circle))
+			return r1.crossPerp(futureW());
+		return DVector2.ZERO;
+	}
+	
+	public DVector2 rCrossDW(DVector2 r1) {
+		if (!(shape instanceof Circle))
+			return r1.crossPerp(future.dW);
+		return DVector2.ZERO;
 	}
 	
 	public double energy() {

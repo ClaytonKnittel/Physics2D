@@ -2,7 +2,6 @@ package mechanics2D;
 
 import java.awt.Color;
 
-import algorithms.MatrixAlgorithms;
 import mechanics2D.physics.PMath;
 import mechanics2D.physics.Wall;
 import mechanics2D.graphics.Screen;
@@ -13,13 +12,10 @@ import mechanics2D.physics.Box;
 import mechanics2D.physics.Force;
 import mechanics2D.physics.ForceField;
 import mechanics2D.physics.InteractiveForce;
-import mechanics2D.tests.ConditionalDrawer;
 import mechanics2D.tests.DirectionDrawer;
 import methods.P;
-import tensor.DMatrixN;
-import tensor.DMatrixS;
+import structures.Reversible;
 import tensor.DVector2;
-import tensor.DVectorN;
 
 import static java.awt.Color.*;
 
@@ -31,31 +27,32 @@ public class Main {
 		return 500 * Math.random() - 250;
 	}
 	
-	public static void main(String args[]) {
-//		DMatrixS i = DMatrixS.interactionMatrix(new Integer[] {1, 2, 3}, (a, b) -> a + b);
-//		System.out.println(i);
-//		
-//		DMatrixN m = new DMatrixN(
-//			 1, .3, -.4, .13,
-//			 -.2, 1, .3, .9,
-//			 .5, -.5, 1, .22,
-//			 -.23, -1.1, 1.0, 1);
-//		DVectorN be = new DVectorN(-.6, -.3, -.9, -.1);
-//		
-//		System.out.println("Answer: " + MatrixAlgorithms.solveConstrainedEqn(m, be));
-//		
-//		System.exit(0);
+	public static class Pair implements Reversible<Pair> {
+		int x, y;
 		
+		public Pair(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public Pair reverse() {
+			return new Pair(y, x);
+		}
+	}
+	
+	public static void main(String args[]) {
 		Screen s = new Screen(600, 500);
 		
 		Color[] colors = new Color[] {
 				RED, GREEN, BLUE, ORANGE, YELLOW, CYAN, BLACK, DARK_GRAY, LIGHT_GRAY, GRAY, MAGENTA, PINK
 		};
-		Ball[] balls = new Ball[1];
+		Ball[] balls = new Ball[16];
 		int l = 0;
-		for (int x = 100; x < 200; x += 100) {
-			for (int y = 100; y < 200; y += 100)
-				balls[l++] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
+		for (int x = 100; x < 500; x += 100) {
+			for (int y = 100; y < 500; y += 100) {
+				balls[l] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
+				balls[l++].setRestitution(Math.random() * .2 + .7);
+			}
 		}
 		
 		Ball b1 = new Ball(300, 250, 0, 0, 30, 14, colors[5]);
@@ -63,7 +60,8 @@ public class Main {
 		Ball b3 = new Ball(357, 250, -10, 0, 30, 14, colors[2]);
 		
 		b1.setRestitution(.7);
-		b2.setRestitution(.7);
+		b2.setRestitution(.8);
+		b3.setRestitution(.9);
 		
 		Box box = new Box(200, 400, 40, 70, 20, 100, 40, Color.ORANGE);
 		box.setAngle(0);
@@ -110,8 +108,8 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(b1, b3);
-		//s.add(balls);
+		s.add(b1, b2, b3);
+		s.add(balls);
 		//s.add(box, box2);
 		//s.add(box2);
 		//s.add(mid);

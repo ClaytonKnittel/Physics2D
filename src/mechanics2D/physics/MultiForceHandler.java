@@ -38,7 +38,7 @@ public class MultiForceHandler {
 		if (contacts.empty())
 			return;
 		
-		List<Connection<Body, CollisionInformation>[]> groups = contacts.groups();
+		List<Connection<Body, CollisionInformation>[]> groups = contacts.groups(b -> !PassiveBody.is(b));
 		
 		for (Connection<Body, CollisionInformation>[] c : groups) {
 			
@@ -62,7 +62,7 @@ public class MultiForceHandler {
 			double strength;
 			for (int i = 0; i < forces.dim(); i++) {
 				strength = forces.get(i);
-//				P.pl("Strengtha: " + strength + "\n");
+//				P.pl("Strength: " + strength + "\n");
 				c[i].to().addImpulse(new Force(c[i].connector(), c[i].to().pos(), -strength));
 				c[i].from().addImpulse(new Force(c[i].connector(), c[i].from().pos(), strength));
 			}
@@ -100,23 +100,25 @@ public class MultiForceHandler {
 		DVector2 r1 = b1.pos().minus(c.loc());
 		DVector2 r2 = b2.pos().minus(c.loc());
 		
-		DVector2 t1 = r1.crossPerp(b1.futureW());
-		DVector2 t2 = r2.crossPerp(b2.futureW());
+		DVector2 t1 = b1.dP(r1);
+		DVector2 t2 = b2.dP(r2);
+		
+		DVector2 rCW1 = b1.rCrossDW(r1);
+		DVector2 rCW2 = b2.rCrossDW(r2);
 		
 		DVector2 nPrime = b1.nPrime(b2, c);
 		
 		DVector2 dP = b1.futureVel().minus(b2.futureVel()).plus(t1).minus(t2); // velocity of p (p1' - p2')
 		
-		double twist = 2 * nPrime.dot(dP); // n' . (p1' - p2')
+		double twist = 2 * nPrime.dot(dP); // 2 n' . (p1' - p2')
 		
 		double lin = -c.dir().dot(
-				b1.acc().minus(b2.acc())
-				.plus(r1.crossPerp(b1.dW()).minus(r2.crossPerp(b2.dW())))
+				b1.acc().minus(b2.acc()).plus(rCW1.minus(rCW2))
 				.minus(t1.crossPerp(b1.futureW())).plus(t2.crossPerp(b2.futureW()))); // n . (p1'' - p2'')
 		
-		double zeroVel = c.dir().dot(b2.vel().minus(b1.vel())) * 0;
+		double zeroVel = c.dir().dot(b2.vel().minus(b1.vel()));
 		
-		P.pl("current vel: " + b2.vel());
+//		P.pl("current vel: " + b2.vel() + "   w: " + b2.w());
 //		P.pl("future vel: " + b2.futureVel());
 		
 //		P.pl("(" + twist + ", " + lin + ", " + zeroVel + ") = " + (twist + lin + zeroVel));
