@@ -60,32 +60,10 @@ public class MultiForceHandler {
 //			System.out.println("b: " + b);
 			
 			DVectorN forces = MatrixAlgorithms.solveConstrainedEqn(a, b);
-			//P.pl(forces);
-			DVectorN accel = (a.multiply(forces).plus(b));
-			
-//			if (b.dim() == 8) {
-//				P.pl("A:\n" + a + "\nB: " + b);
-//				System.out.println("Forces: " + forces);
-//				P.pl("Accels: " + accel + "\n");
-//				for (Connection<Body, CollisionInformation> de : c)
-//					P.p(de.connector() + "\n");
-//			}
 			
 			double strength;
 			for (int i = 0; i < forces.dim(); i++) {
 				strength = forces.get(i);
-				if (Math.abs(forces.dot(accel)) > .000001) {
-//					System.out.println("Force:  " + strength);
-//					System.out.println("A: \n" + a);
-//					System.out.println("B: " + b);
-					System.out.println("Forces: " + forces);
-					P.pl("Accels: " + accel + "\n");
-					
-//					for (Connection<Body, CollisionInformation> de : c)
-//						P.p(de.connector() + "\n");
-//					System.exit(0);
-				}
-//				P.pl("Strength: " + strength + "\n");
 				c[i].to().addImpulse(c[i].connector(), -strength);
 				c[i].from().addImpulse(c[i].connector(), strength);
 			}
