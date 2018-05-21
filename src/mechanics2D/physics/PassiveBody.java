@@ -1,5 +1,6 @@
 package mechanics2D.physics;
 
+import mechanics2D.shapes.CollisionInformation;
 import mechanics2D.shapes.Shape;
 
 public abstract class PassiveBody extends Body {
@@ -19,6 +20,11 @@ public abstract class PassiveBody extends Body {
 	
 	@Override
 	public void addImpulse(Force force) {
+		return;
+	}
+	
+	@Override
+	public void addImpulse(CollisionInformation c, double strength) {
 		return;
 	}
 	

@@ -2,6 +2,7 @@ package mechanics2D;
 
 import java.awt.Color;
 
+import algorithms.MatrixAlgorithms;
 import mechanics2D.physics.PMath;
 import mechanics2D.physics.Wall;
 import mechanics2D.graphics.Screen;
@@ -15,7 +16,9 @@ import mechanics2D.physics.InteractiveForce;
 import mechanics2D.tests.DirectionDrawer;
 import methods.P;
 import structures.Reversible;
+import tensor.DMatrixN;
 import tensor.DVector2;
+import tensor.DVectorN;
 
 import static java.awt.Color.*;
 
@@ -41,6 +44,27 @@ public class Main {
 	}
 	
 	public static void main(String args[]) {
+		
+//		DMatrixN a = new DMatrixN(0.0667,	-0.0333,	0.0,	0.0,	0.0,	-0.0333,
+//				-0.0333,	0.0667,	0.0,	0.0,	0.0,	0.0,
+//				0.0,	0.0,	0.0333,	0.0,	0.0,	0.0,
+//				0.0,	0.0,	0.0,	0.0333,	0.0,	0.0,
+//				0.0,	0.0,	0.0,	0.0,	0.0333,	-0.001,
+//				-0.0333,	0.0,	0.0,	0.0,	-0.001,	0.0333);
+//		DVectorN bb = new DVectorN(0.0, 0.0, -24.9888, -24.9888, -24.9888, -9.2272);
+//		
+////		DMatrixN a = new DMatrixN(1, -1, -1, 1);
+////		DVectorN bb = new DVectorN(-1, -1);
+//		
+//		P.pl("A:\n" + a + "\n");
+//		
+//		DVectorN answer = MatrixAlgorithms.solveConstrainedEqn(a, bb);
+//		
+//		P.pl("answer: " + answer);
+//		P.pl("Accels: " + a.multiply(answer).plus(bb));
+//		
+//		System.exit(0);
+		
 		Screen s = new Screen(600, 500);
 		
 		Color[] colors = new Color[] {
@@ -57,11 +81,13 @@ public class Main {
 		
 		Ball b1 = new Ball(300, 250, 0, 0, 30, 14, colors[5]);
 		Ball b2 = new Ball(272, 250, 0, 0, 30, 14, colors[1]);
-		Ball b3 = new Ball(357, 250, -10, 0, 30, 14, colors[2]);
+		Ball b3 = new Ball(357, 250, -50, 0, 30, 14, colors[2]);
+		Ball b4 = new Ball(240, 250, 0, 0, 30, 14, colors[3]);
 		
 		b1.setRestitution(.7);
 		b2.setRestitution(.8);
 		b3.setRestitution(.9);
+		b4.setRestitution(.87);
 		
 		Box box = new Box(200, 400, 40, 70, 20, 100, 40, Color.ORANGE);
 		box.setAngle(0);
@@ -83,6 +109,8 @@ public class Main {
 		Wall north = new Wall(300, 30, 0, 600, 20, Color.DARK_GRAY);
 		Wall west = new Wall(10, 250, 0, 20, 500, Color.DARK_GRAY);
 		Wall east = new Wall(590, 250, 0, 20, 500, Color.DARK_GRAY);
+		
+		south.setAngle(.03);
 		
 //		ConditionalDrawer d = new ConditionalDrawer(v -> {
 //			DVector2 e = box.toBodyFrame(v);
@@ -108,8 +136,8 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(b1, b2, b3);
-		s.add(balls);
+		s.add(b1, b2, b3, b4);
+		//s.add(balls);
 		//s.add(box, box2);
 		//s.add(box2);
 		//s.add(mid);

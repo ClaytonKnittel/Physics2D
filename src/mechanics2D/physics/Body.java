@@ -133,6 +133,10 @@ public abstract class Body implements IsShape, Orientable, Interactive, PhysicsC
 		netImpulse.add(force);
 	}
 	
+	public void addImpulse(CollisionInformation c, double strength) {
+		addImpulse(new Force(c, pos(), strength));
+	}
+	
 	private void resetForces() {
 		netForce.clear();
 		netImpulse.clear();

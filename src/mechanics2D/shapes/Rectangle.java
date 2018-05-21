@@ -158,7 +158,7 @@ public class Rectangle extends AbstractShape {
 			
 			addCollision(transed(new CollisionInformation(new DVector2(x, hheight), y > 0 ? Math.PI / 2 : 3 * Math.PI / 2)));
 		} else {													// shouldn't happen
-			System.err.println("Circle inside rectangle");
+			//System.err.println("Circle inside rectangle");
 			return false;
 		}
 		return true;

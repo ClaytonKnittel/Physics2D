@@ -42,29 +42,52 @@ public class MultiForceHandler {
 		
 		for (Connection<Body, CollisionInformation>[] c : groups) {
 			
-			DMatrixN a = DMatrixN.interactionMatrix(c, (connection1, connection2) -> {
+			DMatrixN a = DMatrixN.interactionMatrix(c, (con1, con2) -> {
 				// need to compute the affect of connection 2 on connectio 1
-				double a1 = aij(connection1.from(), connection1.connector(), connection2.connector());
-				a1 += aij(connection1.to(), connection1.connector(), connection2.connector());
+				
+				double a1 = 0;
+				if (con1.to() == con2.to() || con1.to() == con2.from())
+					a1 += aij(con1.to(), con1.connector(con1.to()), con2.connector(con1.to()));
+				if (con1.from() == con2.to() || con1.from() == con2.from())
+					a1 += aij(con1.from(), con1.connector(con1.from()), con2.connector(con1.from()));
 				
 				return a1;
 			});
 //			System.out.println("Matrix:\n" + a);
 			
-			//FIXME
 			DVectorN b = DVectorN.functionalMap(c, d -> b(d.to(), d.from(), d.connector()));
 			
 //			System.out.println("b: " + b);
 			
 			DVectorN forces = MatrixAlgorithms.solveConstrainedEqn(a, b);
 			//P.pl(forces);
+			DVectorN accel = (a.multiply(forces).plus(b));
+			
+//			if (b.dim() == 8) {
+//				P.pl("A:\n" + a + "\nB: " + b);
+//				System.out.println("Forces: " + forces);
+//				P.pl("Accels: " + accel + "\n");
+//				for (Connection<Body, CollisionInformation> de : c)
+//					P.p(de.connector() + "\n");
+//			}
 			
 			double strength;
 			for (int i = 0; i < forces.dim(); i++) {
 				strength = forces.get(i);
+				if (Math.abs(forces.dot(accel)) > .000001) {
+//					System.out.println("Force:  " + strength);
+//					System.out.println("A: \n" + a);
+//					System.out.println("B: " + b);
+					System.out.println("Forces: " + forces);
+					P.pl("Accels: " + accel + "\n");
+					
+//					for (Connection<Body, CollisionInformation> de : c)
+//						P.p(de.connector() + "\n");
+//					System.exit(0);
+				}
 //				P.pl("Strength: " + strength + "\n");
-				c[i].to().addImpulse(new Force(c[i].connector(), c[i].to().pos(), -strength));
-				c[i].from().addImpulse(new Force(c[i].connector(), c[i].from().pos(), strength));
+				c[i].to().addImpulse(c[i].connector(), -strength);
+				c[i].from().addImpulse(c[i].connector(), strength);
 			}
 		}
 		
@@ -126,7 +149,7 @@ public class MultiForceHandler {
 	}
 	
 	private boolean isContact(Body b1, Body b2, CollisionInformation c) {
-		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold;
+		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold || true;
 	}
 	
 }
