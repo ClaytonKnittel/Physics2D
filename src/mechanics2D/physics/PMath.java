@@ -5,8 +5,8 @@ import tensor.DVector2;
 
 public class PMath {
 	
-	public static double dt = 0.0009765625;
-	//public static double dt = 0.00390625;
+	//public static double dt = 0.0009765625;
+	public static double dt = 0.00390625;
 	
 	public static double G = 10000;
 	

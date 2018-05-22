@@ -60,6 +60,14 @@ public class MultiForceHandler {
 //			System.out.println("b: " + b);
 			
 			DVectorN forces = MatrixAlgorithms.solveConstrainedEqn(a, b);
+
+//			DVectorN ac = a.multiply(forces).plus(b);
+//			for (int i = 0; i < ac.dim(); i++) {
+//				if (ac.get(i) < -.00000001) {
+//					P.pl("A:\n" + a + "\n" + b);
+//					P.pl("Accel: " + ac.get(i));
+//				}
+//			}
 			
 			double strength;
 			for (int i = 0; i < forces.dim(); i++) {
@@ -127,7 +135,7 @@ public class MultiForceHandler {
 	}
 	
 	private boolean isContact(Body b1, Body b2, CollisionInformation c) {
-		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold || true;
+		return Math.abs(b1.vel().minus(b2.vel()).dot(c.dir())) < threshold;
 	}
 	
 }

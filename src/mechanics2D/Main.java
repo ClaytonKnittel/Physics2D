@@ -45,7 +45,7 @@ public class Main {
 	
 	public static void main(String args[]) {
 		
-//		DMatrixN a = new DMatrixN(0.06666666666666668,	-0.033333333333071445,	0.0,	0.0,	0.0,	-9.40360215257851E-8,	9.40360215257851E-8,	-0.03331833727882451,
+//		DMatrixN a = new DMatrixN(8, 8, 0.06666666666666668,	-0.033333333333071445,	0.0,	0.0,	0.0,	-9.40360215257851E-8,	9.40360215257851E-8,	-0.03331833727882451,
 //				-0.033333333333071445,	0.06666666666666668,	-0.03333333333330137,	0.0,	3.809814854652954E-8,	-3.809814854652954E-8,	0.0,	0.0,
 //				0.0,	-0.033333333333301386,	0.06666666666666667,	8.425330054093703E-8,	-8.42533005407202E-8,	0.0,	0.0,	0.0,
 //				0.0,	0.0,	8.425330054093703E-8,	0.03333333333333333,	0.0,	0.0,	0.0,	0.0,
@@ -64,16 +64,7 @@ public class Main {
 //		
 //		P.pl("answer: " + answer);
 //		P.pl("Accels: " + a.multiply(answer).plus(bb));
-		
-//		DMatrixN aa = new DMatrixN(0.06666666666666668,	-0.033333333333071445,	-0.03333333333330137,	0.0,	3.809814854652954E-8,
-//				-0.033333333333071445,	0.06666666666666668,	0.0,	0.0,	0.0,
-//				-0.033333333333301386,	0.0,	0.06666666666666667,	8.425330054093703E-8,	-8.42533005407202E-8,
-//				0.0,	0.0,	8.425330054093703E-8,	0.03333333333333333,	0.0,
-//				3.80981485463127E-8,	0.0,	-8.425330054093703E-8,	0.0,	0.03333333333333333);
-//		DVectorN dd = new DVectorN(-3.809814854652954E-8, -9.40360215257851E-8, 0.0, 0.0, 0.0);
 //		
-//		P.pl(DMatrixN.solve(aa, dd.times(-1)));
-		
 //		System.exit(0);
 		
 		Screen s = new Screen(600, 500);
@@ -81,10 +72,10 @@ public class Main {
 		Color[] colors = new Color[] {
 				RED, GREEN, BLUE, ORANGE, YELLOW, CYAN, BLACK, DARK_GRAY, LIGHT_GRAY, GRAY, MAGENTA, PINK
 		};
-		Ball[] balls = new Ball[16];
+		Ball[] balls = new Ball[36];
 		int l = 0;
-		for (int x = 100; x < 500; x += 100) {
-			for (int y = 100; y < 500; y += 100) {
+		for (int x = 100; x < 500; x += 70) {
+			for (int y = 100; y < 500; y += 70) {
 				balls[l] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
 				balls[l++].setRestitution(Math.random() * .2 + .7);
 			}
@@ -121,7 +112,7 @@ public class Main {
 		Wall west = new Wall(10, 250, 0, 20, 500, Color.DARK_GRAY);
 		Wall east = new Wall(590, 250, 0, 20, 500, Color.DARK_GRAY);
 		
-		south.setAngle(.03);
+		south.setAngle(.05);
 		
 //		ConditionalDrawer d = new ConditionalDrawer(v -> {
 //			DVector2 e = box.toBodyFrame(v);
@@ -147,7 +138,7 @@ public class Main {
 			}
 		}, 30, Color.BLACK);
 		
-		s.add(b1, b2, b3, b4);
+		//s.add(b1, b2, b3, b4);
 		s.add(balls);
 		//s.add(box, box2);
 		//s.add(box2);
