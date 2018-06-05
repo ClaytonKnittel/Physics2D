@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import mechanics2D.graphics.Drawable;
 import mechanics2D.shapes.AbstractShape;
 import mechanics2D.shapes.CollisionInformation;
+import methods.P;
 import structures.Act;
 import structures.Web;
 
@@ -80,9 +81,14 @@ public class Bodies {
 		
 		bodies.actPairs((b1, b2) -> {
 			b1.interact(b2);
-			for (CollisionInformation c : AbstractShape.getCollisions())
-				contactForceHandler.add(b1, b2, c);
-			AbstractShape.clearCollisions();
+			if (AbstractShape.hasCollisions()) {
+				for (CollisionInformation c : AbstractShape.getCollisions()) {
+					//P.pl(c);
+					contactForceHandler.add(b1, b2, c);
+				}
+				//P.pl("");
+				AbstractShape.clearCollisions();
+			}
 		});
 		
 		bodies.act(b -> b.appendFutureState());

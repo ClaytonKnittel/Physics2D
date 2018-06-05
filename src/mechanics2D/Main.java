@@ -84,21 +84,32 @@ public class Main {
 		Ball b1 = new Ball(300, 250, 0, 0, 30, 14, colors[5]);
 		Ball b2 = new Ball(272, 250, 0, 0, 30, 14, colors[1]);
 		Ball b3 = new Ball(357, 250, -50, 0, 30, 14, colors[2]);
-		Ball b4 = new Ball(240, 250, 0, 0, 30, 14, colors[3]);
+		Ball b4 = new Ball(244, 250, 0, 0, 30, 14, colors[3]);
 		
-		b1.setRestitution(.7);
-		b2.setRestitution(.8);
-		b3.setRestitution(.9);
-		b4.setRestitution(.87);
+		Ball[] billiards = new Ball[11];
+		double sq3 = Math.sqrt(3);
+		l = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j <= i; j++) {
+				billiards[l] = new Ball(300 + 14 * sq3 * i, 250 + 14 * (i - 2 * j), 0, 0, 30, 14, colors[(int) (Math.random() * colors.length)]);
+				billiards[l++].setRestitution(.97);
+			}
+		}
+		billiards[10] = new Ball(100, 250, 400, 0, 30, 14, new Color(0xfb, 0xf3, 0xd3));
 		
-		Box box = new Box(200, 400, 40, 70, 20, 100, 40, Color.ORANGE);
+//		b1.setRestitution(.7);
+//		b2.setRestitution(.8);
+//		b3.setRestitution(.9);
+//		b4.setRestitution(.87);
+		
+		Box box = new Box(200, 400, 40, 0, 20, 100, 100, Color.ORANGE);
 		box.setAngle(0);
-		box.setW(.1);
+		box.setW(0);
 		box.setRestitution(.8);
 		
-		Box box2 = new Box(200, 330, 40, 0, 20, 100, 30, Color.BLUE);
+		Box box2 = new Box(400, 400, -40, 0, 20, 100, 100, Color.BLUE);
 		box2.setAngle(0);
-		box2.setW(.07);
+		box2.setW(0);
 		box2.setRestitution(.8);
 		
 		ForceField gravity = new ForceField(b -> new Force(DVector2.ZERO, DVector2.Y.times(200 * b.mass())));
@@ -112,7 +123,7 @@ public class Main {
 		Wall west = new Wall(10, 250, 0, 20, 500, Color.DARK_GRAY);
 		Wall east = new Wall(590, 250, 0, 20, 500, Color.DARK_GRAY);
 		
-		south.setAngle(.05);
+		south.setAngle(0);
 		
 //		ConditionalDrawer d = new ConditionalDrawer(v -> {
 //			DVector2 e = box.toBodyFrame(v);
@@ -140,12 +151,14 @@ public class Main {
 		
 		//s.add(b1, b2, b3, b4);
 		s.add(balls);
+		//s.add(billiards);
 		//s.add(box, box2);
 		//s.add(box2);
 		//s.add(mid);
 		s.add(south, north, east, west);
 		s.add(dir);
 		s.addPhysics(gravity);
+		//s.addPhysics(attractor);
 		
 		ThreadMaster graphics = new ThreadMaster(() -> {
 			s.render();

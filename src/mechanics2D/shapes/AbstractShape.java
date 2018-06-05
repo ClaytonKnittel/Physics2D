@@ -45,6 +45,10 @@ public abstract class AbstractShape implements Shape, Transformable {
 		lastCollisions.add(c);
 	}
 	
+	public static boolean hasCollisions() {
+		return lastCollisions.size() != 0;
+	}
+	
 	public static Iterable<CollisionInformation> getCollisions() {
 		return lastCollisions;
 	}
