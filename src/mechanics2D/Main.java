@@ -156,7 +156,7 @@ public class Main {
 		//s.add(box2);
 		//s.add(mid);
 		s.add(south, north, east, west);
-		s.add(dir);
+		//s.add(dir);
 		s.addPhysics(gravity);
 		//s.addPhysics(attractor);
 		
