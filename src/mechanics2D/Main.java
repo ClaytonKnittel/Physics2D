@@ -72,10 +72,10 @@ public class Main {
 		Color[] colors = new Color[] {
 				RED, GREEN, BLUE, ORANGE, YELLOW, CYAN, BLACK, DARK_GRAY, LIGHT_GRAY, GRAY, MAGENTA, PINK
 		};
-		Ball[] balls = new Ball[36];
+		Ball[] balls = new Ball[16];
 		int l = 0;
-		for (int x = 100; x < 500; x += 70) {
-			for (int y = 100; y < 500; y += 70) {
+		for (int x = 100; x < 500; x += 100) {
+			for (int y = 100; y < 500; y += 100) {
 				balls[l] = new Ball(x, y, random(), random(), 30, 14, colors[(int) (Math.random() * colors.length)]);
 				balls[l++].setRestitution(Math.random() * .2 + .7);
 			}
